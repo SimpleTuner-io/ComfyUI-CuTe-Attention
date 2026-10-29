@@ -1,0 +1,396 @@
+{
+  "date": "2026-10-28",
+  "kohakufa_cute_revision": "736c23f89a4bdf940a421f76c6909fe60c4c4142",
+  "comfyui_version": "0.43.0",
+  "comfyui_revision": "35060f0156181ae78a86b10f098f67ce8e83697f",
+  "environment": {
+    "python": "3.12.3",
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "driver": "580.82.07",
+    "cutlass_dsl": "4.8.1",
+    "tvm_ffi": "0.1.15.post1",
+    "triton": "3.6.0",
+    "ninja": "1.13.0"
+  },
+  "benchmark": {
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "dtype": "bfloat16",
+    "batch": 1,
+    "heads": 16,
+    "causal": false,
+    "layout": "BHSD view of BSHD storage",
+    "method": "CUDA events; median of repeated means; compilation and warm-up excluded",
+    "iterations": 30,
+    "repeats": 5
+  },
+  "cases": [
+    {
+      "seq": 1024,
+      "dim": 64,
+      "native": {
+        "median_ms": 0.03461120128631592,
+        "samples_ms": [
+          0.034918399651845296,
+          0.034679468472798666,
+          0.03461120128631592,
+          0.03453866640726725,
+          0.03454613288243612
+        ]
+      },
+      "cute_process_override": {
+        "median_ms": 0.03819520076115926,
+        "samples_ms": [
+          0.038355199495951335,
+          0.03829973141352336,
+          0.03819520076115926,
+          0.03819520076115926,
+          0.03819520076115926
+        ]
+      },
+      "native_over_cute": 0.9061662354583585,
+      "native_ops": [
+        "aten::_scaled_dot_product_flash_attention",
+        "aten::scaled_dot_product_attention"
+      ]
+    },
+    {
+      "seq": 1024,
+      "dim": 128,
+      "native": {
+        "median_ms": 0.065774933497111,
+        "samples_ms": [
+          0.06590933402379354,
+          0.06574079990386963,
+          0.065774933497111,
+          0.06570666631062826,
+          0.06578026612599691
+        ]
+      },
+      "cute_process_override": {
+        "median_ms": 0.07218453089396158,
+        "samples_ms": [
+          0.07226026852925618,
+          0.07218453089396158,
+          0.07215786774953206,
+          0.07219200134277344,
+          0.07215147018432617
+        ]
+      },
+      "native_over_cute": 0.9112053882255434,
+      "native_ops": [
+        "aten::_scaled_dot_product_flash_attention",
+        "aten::scaled_dot_product_attention"
+      ]
+    },
+    {
+      "seq": 1024,
+      "dim": 256,
+      "native": {
+        "median_ms": 0.12409813404083252,
+        "samples_ms": [
+          0.12427946726481119,
+          0.12427946726481119,
+          0.12396799723307292,
+          0.12409813404083252,
+          0.12404053211212158
+        ]
+      },
+      "cute_process_override": {
+        "median_ms": 0.13612160682678223,
+        "samples_ms": [
+          0.1364949385325114,
+          0.13632747332255046,
+          0.13612160682678223,
+          0.13599360783894857,
+          0.13605440457661946
+        ]
+      },
+      "native_over_cute": 0.9116710927365863,
+      "native_ops": [
+        "aten::_scaled_dot_product_flash_attention",
+        "aten::scaled_dot_product_attention"
+      ]
+    },
+    {
+      "seq": 1024,
+      "dim": 512,
+      "native": {
+        "median_ms": 0.46332588195800783,
+        "samples_ms": [
+          0.46345173517862953,
+          0.4648277282714844,
+          0.46332588195800783,
+          0.4620917320251465,
+          0.46192639668782554
+        ]
+      },
+      "cute_process_override": {
+        "median_ms": 0.43711147308349607,
+        "samples_ms": [
+          0.4447914759318034,
+          0.44575894673665367,
+          0.43711147308349607,
+          0.42386773427327473,
+          0.4239701271057129
+        ]
+      },
+      "native_over_cute": 1.0599719075996532,
+      "native_ops": [
+        "aten::_scaled_dot_product_efficient_attention",
+        "aten::scaled_dot_product_attention"
+      ]
+    },
+    {
+      "seq": 4096,
+      "dim": 64,
+      "native": {
+        "median_ms": 0.4310655911763509,
+        "samples_ms": [
+          0.4284757296244303,
+          0.42815574010213214,
+          0.4310655911763509,
+          0.43666772842407225,
+          0.4366570790608724
+        ]
+      },
+      "cute_process_override": {
+        "median_ms": 0.4747946739196777,
+        "samples_ms": [
+          0.46973225275675456,
+          0.4701194763183594,
+          0.4747946739196777,
+          0.4930826822916667,
+          0.4985514640808105
+        ]
+      },
+      "native_over_cute": 0.9078989610765419,
+      "native_ops": [
+        "aten::_scaled_dot_product_flash_attention",
+        "aten::scaled_dot_product_attention"
+      ]
+    },
+    {
+      "seq": 4096,
+      "dim": 128,
+      "native": {
+        "median_ms": 0.8617301305135091,
+        "samples_ms": [
+          0.912834103902181,
+          0.87707945505778,
+          0.8617301305135091,
+          0.8565760294596354,
+          0.8556554794311524
+        ]
+      },
+      "cute_process_override": {
+        "median_ms": 0.993885866800944,
+        "samples_ms": [
+          0.9723562876383464,
+          0.9933770497639974,
+          0.993885866800944,
+          0.9942698796590169,
+          0.9938954671223958
+        ]
+      },
+      "native_over_cute": 0.8670312752179389,
+      "native_ops": [
+        "aten::_scaled_dot_product_flash_attention",
+        "aten::scaled_dot_product_attention"
+      ]
+    },
+    {
+      "seq": 4096,
+      "dim": 256,
+      "native": {
+        "median_ms": 1.8201600392659505,
+        "samples_ms": [
+          1.8319360097249349,
+          1.8228907267252603,
+          1.8201600392659505,
+          1.819854990641276,
+          1.8195796966552735
+        ]
+      },
+      "cute_process_override": {
+        "median_ms": 1.9766250610351563,
+        "samples_ms": [
+          1.9437547047932944,
+          1.945873006184896,
+          1.9776852925618489,
+          1.9766613006591798,
+          1.9766250610351563
+        ]
+      },
+      "native_over_cute": 0.9208423363370364,
+      "native_ops": [
+        "aten::_scaled_dot_product_flash_attention",
+        "aten::scaled_dot_product_attention"
+      ]
+    },
+    {
+      "seq": 4096,
+      "dim": 512,
+      "native": {
+        "median_ms": 6.8274175008138025,
+        "samples_ms": [
+          6.921771748860677,
+          6.821751403808594,
+          6.725836690266927,
+          6.8274175008138025,
+          6.894489542643229
+        ]
+      },
+      "cute_process_override": {
+        "median_ms": 6.43337148030599,
+        "samples_ms": [
+          6.48650156656901,
+          6.393473307291667,
+          6.368495178222656,
+          6.43337148030599,
+          6.503424072265625
+        ]
+      },
+      "native_over_cute": 1.061250313574162,
+      "native_ops": [
+        "aten::_scaled_dot_product_efficient_attention",
+        "aten::scaled_dot_product_attention"
+      ]
+    }
+  ],
+  "validation": {
+    "cpu_unit_tests": 32,
+    "gpu_groups_per_cuda_build": 5,
+    "cuda_builds": [
+      "2.11.0+cu128",
+      "2.11.0+cu130"
+    ],
+    "real_comfyui_loader_smoke": "passed on both CUDA builds",
+    "gradient_reference": "native Torch SDPA in FP64 on identical rounded inputs",
+    "gradient_metric": "L2 error norm divided by reference gradient L2 norm"
+  },
+  "gradient_cases_cuda13": [
+    {
+      "dtype": "torch.float16",
+      "dim": 64,
+      "causal": false,
+      "masked": false,
+      "gqa": false,
+      "gradient_relative_errors": [
+        0.00029133423709985806,
+        0.00029247113079856364,
+        0.0002860558820942646
+      ]
+    },
+    {
+      "dtype": "torch.float16",
+      "dim": 64,
+      "causal": false,
+      "masked": true,
+      "gqa": true,
+      "gradient_relative_errors": [
+        0.0002878427005394521,
+        0.0002943245264583777,
+        0.00029084061075126776
+      ]
+    },
+    {
+      "dtype": "torch.float16",
+      "dim": 128,
+      "causal": true,
+      "masked": false,
+      "gqa": false,
+      "gradient_relative_errors": [
+        0.00027679233513878124,
+        0.0002950114697037101,
+        0.0002839655658411119
+      ]
+    },
+    {
+      "dtype": "torch.float16",
+      "dim": 256,
+      "causal": false,
+      "masked": false,
+      "gqa": false,
+      "gradient_relative_errors": [
+        0.0002916227378369556,
+        0.00029503557164917247,
+        0.0002967029714112151
+      ]
+    },
+    {
+      "dtype": "torch.float16",
+      "dim": 512,
+      "causal": false,
+      "masked": false,
+      "gqa": false,
+      "gradient_relative_errors": [
+        0.00029013399786166475,
+        0.00029479388470031605,
+        0.0002931029922602886
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "dim": 64,
+      "causal": false,
+      "masked": false,
+      "gqa": false,
+      "gradient_relative_errors": [
+        0.0023310297472494334,
+        0.0023460218115055683,
+        0.0022769901608046096
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "dim": 64,
+      "causal": false,
+      "masked": true,
+      "gqa": true,
+      "gradient_relative_errors": [
+        0.0023406440381530244,
+        0.0023402362755972008,
+        0.0023231250707485304
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "dim": 128,
+      "causal": true,
+      "masked": false,
+      "gqa": false,
+      "gradient_relative_errors": [
+        0.002300433766332844,
+        0.002338751744250811,
+        0.0022357603316606814
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "dim": 256,
+      "causal": false,
+      "masked": false,
+      "gqa": false,
+      "gradient_relative_errors": [
+        0.002338979952119955,
+        0.002343041583927758,
+        0.0023583947875755423
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "dim": 512,
+      "causal": false,
+      "masked": false,
+      "gqa": false,
+      "gradient_relative_errors": [
+        0.002330589966398471,
+        0.0023486643790366782,
+        0.002335690924257536
+      ]
+    }
+  ]
+}

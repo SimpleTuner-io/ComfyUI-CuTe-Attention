@@ -1,0 +1,6 @@
+torch>=2.11
+packaging>=23
+nvidia-cutlass-dsl>=4.8,<4.9; platform_system == "Linux"
+apache-tvm-ffi>=0.1.14,<0.2; platform_system == "Linux"
+ninja>=1.11; platform_system == "Linux"
+triton>=3.6,<4; platform_system == "Linux"
