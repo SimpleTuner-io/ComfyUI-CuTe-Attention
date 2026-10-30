@@ -1,5 +1,9 @@
 # RTX 4090 validation
 
+For the current vendor snapshot, see the
+[2026-10-30 refresh validation](vendor-sync-2026-10-30.md). The timings and GPU
+results below describe the earlier source revision identified here.
+
 Validated on 2026-10-28 against ComfyUI **0.43.0**, revision
 `35060f0156181ae78a86b10f098f67ce8e83697f`, using KohakuFA-CuTe revision
 `736c23f89a4bdf940a421f76c6909fe60c4c4142`.

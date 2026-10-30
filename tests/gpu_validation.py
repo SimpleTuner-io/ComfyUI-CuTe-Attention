@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import sys
 import unittest
+from unittest.mock import patch
 
 import torch
 import torch.nn.functional as F
@@ -12,6 +13,8 @@ import torch.nn.functional as F
 from cute_attention import runtime
 from cute_attention.attention import ComfyAttention
 from cute_attention.vendor.kohakufa_cute import api
+
+from .reference import fp64_reference
 
 COMFYUI_ROOT = None
 
@@ -142,6 +145,114 @@ class GPUValidation(unittest.TestCase):
         q = torch.randn(1, 4, 17, 64, device="cuda", dtype=torch.float16)
         compiled = torch.compile(api.automatic_scaled_dot_product_attention, backend="eager", fullgraph=True)
         torch.testing.assert_close(compiled(q, q, q), api.scaled_dot_product_attention(q, q, q))
+
+    def assert_centered_reference(self, actual, inputs, dout, causal, scale=None):
+        expected = fp64_reference(inputs, dout, causal=causal, scale=scale)
+        errors = []
+        for got, wanted in zip(actual, expected):
+            self.assertTrue(torch.isfinite(got).all().item())
+            denominator = wanted.norm().item()
+            if denominator:
+                error = (got.double() - wanted).norm().item() / denominator
+                self.assertLess(error, 0.01 if inputs[0].dtype == torch.bfloat16 else 0.005)
+                errors.append(error)
+            else:
+                self.assertEqual(got.count_nonzero().item(), 0)
+                errors.append(0.0)
+        return errors
+
+    def test_rtx4090_schedule_boundaries(self):
+        if torch.cuda.get_device_name() != "NVIDIA GeForce RTX 4090":
+            self.skipTest("Requires the full RTX 4090 dispatch predicate.")
+        from cute_attention.vendor.kohakufa_cute import ada, kernels, native
+
+        native.extension().clear_cache()
+        kernels._compile_kernel.cache_clear()
+        cases = 0
+        largest_error = 0.0
+        with patch.object(ada, "schedule", wraps=ada.schedule) as selected:
+            for dim in (16, 64, 128, 256, 512):
+                for causal in (False, True):
+                    for queries, keys in (
+                        (127, 113),
+                        (128, 128),
+                        (128, 129),
+                        (129, 128),
+                        (1023, 1023),
+                        (1025, 1023),
+                        (1023, 1031),
+                        (1024, 1024),
+                        (1025, 1031),
+                    ):
+                        with self.subTest(dim=dim, causal=causal, queries=queries, keys=keys):
+                            q = torch.randn(
+                                1, 16, queries, dim, device="cuda", dtype=torch.bfloat16, requires_grad=True
+                            )
+                            k, v = [
+                                torch.randn(
+                                    1, 16, keys, dim, device="cuda", dtype=q.dtype, requires_grad=True
+                                )
+                                for _ in range(2)
+                            ]
+                            dout = torch.randn_like(q)
+                            out = api.scaled_dot_product_attention(q, k, v, is_causal=causal)
+                            actual = (out, *torch.autograd.grad(out, (q, k, v), dout))
+                            errors = self.assert_centered_reference(actual, (q, k, v), dout, causal)
+                            largest_error = max(largest_error, *errors)
+                            cases += 1
+            forward_dimensions = {
+                call.args[2] for call in selected.call_args_list if call.args[1] == "forward"
+            }
+            self.assertEqual(forward_dimensions, {16, 64, 128, 256, 512})
+        print(json.dumps({"ada_boundary_cases": cases, "largest_relative_error": largest_error}), flush=True)
+
+    def test_rtx4090_packed_statistics_graph_replay(self):
+        if torch.cuda.get_device_name() != "NVIDIA GeForce RTX 4090":
+            self.skipTest("Requires the full RTX 4090 dispatch predicate.")
+        for dtype in (torch.float16, torch.bfloat16):
+            with self.subTest(dtype=dtype):
+                inputs = [
+                    torch.randn(1, 16, 1024, 128, device="cuda", dtype=dtype, requires_grad=True)
+                    for _ in range(3)
+                ]
+                dout = torch.randn_like(inputs[0])
+
+                def run():
+                    out = api.scaled_dot_product_attention(*inputs, is_causal=True, scale=-0.25)
+                    return out, *torch.autograd.grad(out, inputs, dout)
+
+                stream = torch.cuda.Stream()
+                stream.wait_stream(torch.cuda.current_stream())
+                with torch.cuda.stream(stream):
+                    run()
+                    run()
+                    graph = torch.cuda.CUDAGraph()
+                    with torch.cuda.graph(graph, stream=stream):
+                        actual = run()
+                torch.cuda.current_stream().wait_stream(stream)
+                for replay in range(2):
+                    if replay:
+                        with torch.no_grad():
+                            for tensor in inputs:
+                                tensor.copy_(torch.randn_like(tensor) * 0.75)
+                    graph.replay()
+                    self.assert_centered_reference(actual, inputs, dout, True, scale=-0.25)
+                out = api.scaled_dot_product_attention(*inputs, is_causal=True, scale=0.0)
+                actual = (out, *torch.autograd.grad(out, inputs, dout))
+                self.assert_centered_reference(actual, inputs, dout, True, scale=0.0)
+                with torch.no_grad():
+                    for tensor in (*inputs, dout):
+                        tensor.zero_()
+                    inputs[0][..., 0] = 10
+                    inputs[1][..., 0] = 9 if dtype == torch.float16 else 5
+                    inputs[1][:, :, 0, 0] = 10
+                    inputs[2][..., 0], inputs[2][:, :, 0, 0] = -1, 1
+                    dout[..., 0] = 1
+                out = api.scaled_dot_product_attention(*inputs, is_causal=True, scale=1.0)
+                actual = (out, *torch.autograd.grad(out, inputs, dout))
+                self.assert_centered_reference(actual, inputs, dout, True, scale=1.0)
+                self.assertGreater(actual[1].double().norm().item(), 0.0)
+                self.assertGreater(actual[2].double().norm().item(), 0.0)
 
     def test_real_comfyui_model_patcher_and_attention_hook(self):
         if COMFYUI_ROOT is None:

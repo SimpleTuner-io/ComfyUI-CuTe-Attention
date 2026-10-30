@@ -1,0 +1,109 @@
+{
+  "date": "2026-10-30",
+  "kohakufa_cute_revision": "d4700f581ed538ae72928872e3a1a168cad01c30",
+  "comfyui_revision": "35060f0156181ae78a86b10f098f67ce8e83697f",
+  "comfyui_version": "0.43.0",
+  "environment": {
+    "python": "3.12.3",
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "capability": [
+      8,
+      9
+    ],
+    "sm_count": 128,
+    "memory_bytes": 25252724736,
+    "cutlass_dsl": "4.8.1",
+    "tvm_ffi": "0.1.15.post2",
+    "triton": "3.6.0",
+    "ninja": "1.13.0",
+    "driver": "595.91.07",
+    "power_limit_watts": 450.0
+  },
+  "native_cpp_sha256": "23135bde487228ae85478dd928a8b03a0dea9cb63297e31f6734aa9962b4468e",
+  "validation": {
+    "cpu_unit_tests_macos": 33,
+    "cpu_unit_tests_linux": 33,
+    "gpu_test_groups": 7,
+    "expanded_boundary_test": "passed",
+    "real_comfyui_loader_smoke": "passed",
+    "wheel_assets": "verified"
+  },
+  "ada_boundaries": {
+    "ada_boundary_cases": 90,
+    "largest_relative_error": 0.002419903086680321,
+    "dtype": "bfloat16",
+    "batch": 1,
+    "heads": 16,
+    "head_dimensions": [
+      16,
+      64,
+      128,
+      256,
+      512
+    ],
+    "causal_modes": [
+      false,
+      true
+    ],
+    "sequence_pairs": [
+      [
+        127,
+        113
+      ],
+      [
+        128,
+        128
+      ],
+      [
+        128,
+        129
+      ],
+      [
+        129,
+        128
+      ],
+      [
+        1023,
+        1023
+      ],
+      [
+        1025,
+        1023
+      ],
+      [
+        1023,
+        1031
+      ],
+      [
+        1024,
+        1024
+      ],
+      [
+        1025,
+        1031
+      ]
+    ],
+    "reference": "centered FP64 equations on identical rounded inputs",
+    "metric": "L2 error norm divided by reference L2 norm, for output and dQ/dK/dV"
+  },
+  "packed_statistics": {
+    "head_dimension": 128,
+    "batch": 1,
+    "heads": 16,
+    "sequence": 1024,
+    "causal": true,
+    "dtypes": [
+      "float16",
+      "bfloat16"
+    ],
+    "graph_replays_per_dtype": 2,
+    "changed_inputs": true,
+    "negative_scale": -0.25,
+    "zero_scale": true,
+    "sharp_attention_nonzero_qk_gradients": true
+  },
+  "compatibility_fix": "Use Torch device properties to avoid CUDA 12 header symbols against a CUDA 13 runtime; preserve per-device eligibility caching and GIL/mutex lock ordering.",
+  "performance_measurements": "Not refreshed; earlier timings remain tied to their original source revision."
+}

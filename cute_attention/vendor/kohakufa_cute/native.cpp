@@ -162,11 +162,38 @@ variable_list forward(Tensor q, Tensor k, Tensor v, Tensor mask, bool masked, do
     return {out, maximum, logsum, blocks};
 }
 
+bool packed_statistics_workspace(const Tensor &q, const Tensor &k, bool masked, bool causal) {
+    // Match the complete-tile guard inside the cached RTX 4090 launch program.
+    if (!causal || masked || q.size(0) != 1 || q.size(1) != 16 || k.size(1) != 16 || q.size(3) != 128 ||
+        q.size(2) < 1024 || k.size(2) < 1024 || q.size(2) % 64 != 0 || k.size(2) % 64 != 0)
+        return false;
+    static std::map<int, bool> eligible_devices;
+    static std::mutex eligibility_mutex;
+    std::unique_lock<std::mutex> lock(eligibility_mutex);
+    const int device = q.get_device();
+    auto found = eligible_devices.find(device);
+    if (found != eligible_devices.end())
+        return found->second;
+    lock.unlock();
+    py::gil_scoped_acquire gil;
+    lock.lock();
+    found = eligible_devices.find(device);
+    if (found != eligible_devices.end())
+        return found->second;
+    // Torch owns the runtime ABI; bundled compiler headers may target another CUDA version.
+    auto properties = py::module_::import("torch").attr("cuda").attr("get_device_properties")(device);
+    const bool eligible = properties.attr("major").cast<int>() == 8 && properties.attr("minor").cast<int>() == 9 &&
+                          properties.attr("name").cast<std::string>() == "NVIDIA GeForce RTX 4090";
+    return eligible_devices.emplace(device, eligible).first->second;
+}
+
 variable_list backward(Tensor q, Tensor k, Tensor v, Tensor mask, bool masked, Tensor maximum, Tensor logsum, Tensor dout,
                        Tensor blocks, const std::optional<Tensor> &out, double scale, bool causal) {
     c10::cuda::CUDAGuard guard(q.device());
     auto dq = at::empty_like(q), dk = at::empty_like(k), dv = at::empty_like(v);
-    auto delta = at::empty_like(maximum);
+    auto delta = packed_statistics_workspace(q, k, masked, causal)
+                     ? at::empty({maximum.size(0), maximum.size(1), 4 * maximum.size(2)}, maximum.options())
+                     : at::empty_like(maximum);
     auto base = out ? at::empty_like(maximum) : maximum;
     if (masked)
         blocks = blocks.expand({q.size(0), q.size(1), (q.size(2) + 63) / 64, (k.size(2) + 63) / 64});
