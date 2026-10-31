@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-31",
+  "kohakufa_cute_revision": "49e4ecd75e8af18813657afba6b9f5d82848335d",
+  "comfyui_revision": "35060f0156181ae78a86b10f098f67ce8e83697f",
+  "comfyui_version": "0.43.0",
+  "environment": {
+    "python": "3.12.3",
+    "torch": "2.11.0+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "capability": [
+      8,
+      9
+    ],
+    "sm_count": 128,
+    "memory_bytes": 25250627584,
+    "cutlass_dsl": "4.8.1",
+    "tvm_ffi": "0.1.15.post2",
+    "triton": "3.6.0",
+    "ninja": "1.13.0",
+    "imported_modules": [
+      "l40s",
+      "medium_backward",
+      "precision",
+      "sm120_backward",
+      "sm120_schedule",
+      "sm86",
+      "sm86_backward",
+      "weight_precision",
+      "wide_backward"
+    ],
+    "driver": "580.142",
+    "power_limit_watts": 350.0
+  },
+  "native_cpp_sha256": "23135bde487228ae85478dd928a8b03a0dea9cb63297e31f6734aa9962b4468e",
+  "validation": {
+    "cpu_unit_tests_macos": 44,
+    "cpu_unit_tests_linux": 44,
+    "imported_precision_policy_tests": 11,
+    "gpu_test_groups_rtx4090": 7,
+    "real_comfyui_loader_smoke": "passed",
+    "packaged_vendor_files": 25,
+    "new_module_imports": 9
+  },
+  "ada_boundaries": {
+    "ada_boundary_cases": 90,
+    "largest_relative_error": 0.002404078153678958,
+    "dtype": "bfloat16",
+    "batch": 1,
+    "heads": 16,
+    "head_dimensions": [
+      16,
+      64,
+      128,
+      256,
+      512
+    ],
+    "reference": "centered FP64 equations on identical rounded inputs",
+    "metric": "L2 error norm divided by reference L2 norm, for output and dQ/dK/dV"
+  },
+  "new_hardware_paths_not_gpu_tested": [
+    "NVIDIA GeForce RTX 3090 Ti",
+    "NVIDIA L40S",
+    "NVIDIA GeForce RTX 5090"
+  ],
+  "hardware_coverage_note": "CPU policy tests and module imports validate integration structure; they do not establish numerical qualification of the new device-specific GPU kernels.",
+  "performance_measurements": "Not refreshed; earlier timings remain tied to their original source revisions."
+}

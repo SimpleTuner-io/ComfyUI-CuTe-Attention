@@ -80,8 +80,8 @@ Selecting CuTe does not guarantee a speedup. Benchmark your actual model and
 shapes, including first-use compilation separately from warm inference.
 See the [RTX 4090 validation and timings](results/README.md) for measured results
 and the tested ComfyUI environment.
-The [latest vendor refresh validation](results/vendor-sync-2026-10-30.md)
-qualifies the updated RTX 4090 schedules and CUDA 13 launcher.
+The [latest vendor refresh validation](results/vendor-sync-2026-10-31.md)
+records the integration checks and hardware coverage for this snapshot.
 
 ## Development
 

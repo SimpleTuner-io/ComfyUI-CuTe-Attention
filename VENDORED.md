@@ -2,13 +2,14 @@
 
 Source: <https://github.com/SimpleTuner-io/KohakuFA-CuTe>
 
-Revision: `d4700f581ed538ae72928872e3a1a168cad01c30`
+Revision: `49e4ecd75e8af18813657afba6b9f5d82848335d`
 
-The 2026-10-30 refresh adds upstream RTX 4090 adaptive scheduling, short D128
-forward support, fused backward centering, and packed statistics workspaces.
-It retains the previous GB10/SM121 optimizations. Dependency requirements and
-licenses are unchanged. Existing RTX 4090 measurements describe the earlier
-revision identified in `results/README.md`.
+The 2026-10-31 refresh adds upstream RTX 3090 Ti, L40S, and RTX 5090 scheduling
+and compensated key/value backward weights, including medium/wide gradient
+owners and forward-normalizer compensation. It retains the previous RTX 4090
+and GB10/SM121 paths. Dependency requirements and licenses are unchanged.
+Existing RTX 4090 measurements describe the earlier revision identified in
+`results/README.md`.
 
 The tracked contents of upstream `src/kohakufa_cute` are included in
 `cute_attention/vendor/kohakufa_cute`. No external KohakuFA-CuTe install or source
@@ -30,8 +31,9 @@ Local integration changes:
   remains cached per device, and the GIL is acquired without holding the cache
   mutex to preserve lock ordering.
 
-Kernel arithmetic and automatic backend selection are unchanged. Keep future
-updates traceable to an upstream revision and preserve these integration changes.
+Apart from the integration changes above, kernel arithmetic and automatic
+backend selection match the recorded upstream revision. Keep future updates
+traceable to an upstream revision and preserve these integration changes.
 
 The root `LICENSE` is the repository's upstream AGPL-3.0 license. `NOTICE` and
 `LICENSES/BSD-3-Clause.txt` are retained from KohakuFA-CuTe. The implementation is
@@ -41,3 +43,6 @@ same KohakuFA-CuTe revision.
 
 The centered FP64 reference in `tests/reference.py` is adapted from upstream
 `benchmarks/reference.py` at this revision for RTX 4090 schedule qualification.
+The precision-policy tests in `tests/test_precision_policy.py` and
+`tests/test_weight_precision.py` are retained from this revision with vendored
+module names and source paths.
