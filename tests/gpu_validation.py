@@ -14,7 +14,7 @@ from cute_attention import runtime
 from cute_attention.attention import ComfyAttention
 from cute_attention.vendor.kohakufa_cute import api
 
-from .reference import fp64_reference
+from .reference import rounded_reference
 
 COMFYUI_ROOT = None
 
@@ -146,8 +146,8 @@ class GPUValidation(unittest.TestCase):
         compiled = torch.compile(api.automatic_scaled_dot_product_attention, backend="eager", fullgraph=True)
         torch.testing.assert_close(compiled(q, q, q), api.scaled_dot_product_attention(q, q, q))
 
-    def assert_centered_reference(self, actual, inputs, dout, causal, scale=None):
-        expected = fp64_reference(inputs, dout, causal=causal, scale=scale)
+    def assert_rounded_reference(self, actual, inputs, dout, causal, scale=None):
+        expected = rounded_reference(inputs, dout, causal=causal, scale=scale, output=actual[0])
         errors = []
         for got, wanted in zip(actual, expected):
             self.assertTrue(torch.isfinite(got).all().item())
@@ -197,7 +197,7 @@ class GPUValidation(unittest.TestCase):
                             dout = torch.randn_like(q)
                             out = api.scaled_dot_product_attention(q, k, v, is_causal=causal)
                             actual = (out, *torch.autograd.grad(out, (q, k, v), dout))
-                            errors = self.assert_centered_reference(actual, (q, k, v), dout, causal)
+                            errors = self.assert_rounded_reference(actual, (q, k, v), dout, causal)
                             largest_error = max(largest_error, *errors)
                             cases += 1
             forward_dimensions = {
@@ -236,10 +236,10 @@ class GPUValidation(unittest.TestCase):
                             for tensor in inputs:
                                 tensor.copy_(torch.randn_like(tensor) * 0.75)
                     graph.replay()
-                    self.assert_centered_reference(actual, inputs, dout, True, scale=-0.25)
+                    self.assert_rounded_reference(actual, inputs, dout, True, scale=-0.25)
                 out = api.scaled_dot_product_attention(*inputs, is_causal=True, scale=0.0)
                 actual = (out, *torch.autograd.grad(out, inputs, dout))
-                self.assert_centered_reference(actual, inputs, dout, True, scale=0.0)
+                self.assert_rounded_reference(actual, inputs, dout, True, scale=0.0)
                 with torch.no_grad():
                     for tensor in (*inputs, dout):
                         tensor.zero_()
@@ -250,9 +250,104 @@ class GPUValidation(unittest.TestCase):
                     dout[..., 0] = 1
                 out = api.scaled_dot_product_attention(*inputs, is_causal=True, scale=1.0)
                 actual = (out, *torch.autograd.grad(out, inputs, dout))
-                self.assert_centered_reference(actual, inputs, dout, True, scale=1.0)
+                self.assert_rounded_reference(actual, inputs, dout, True, scale=1.0)
                 self.assertGreater(actual[1].double().norm().item(), 0.0)
                 self.assertGreater(actual[2].double().norm().item(), 0.0)
+
+    def test_optional_rtx4090_training_routes(self):
+        from cute_attention.vendor.kohakufa_cute import fa4_sm80
+        from cute_attention.vendor.kohakufa_cute.fa4_sm80 import rtx4090
+
+        if torch.cuda.get_device_name() != "NVIDIA GeForce RTX 4090" or not fa4_sm80.available():
+            self.skipTest("Requires the qualified optional runtime and full RTX 4090.")
+        cases = 0
+        guarded_call = rtx4090._s1024_guarded_call
+        with (
+            patch.object(rtx4090, "_short_runner", wraps=rtx4090._short_runner) as short,
+            patch.object(rtx4090, "_s1024_guarded_call", wraps=rtx4090._s1024_guarded_call) as medium,
+            patch.object(rtx4090, "native_runner", wraps=rtx4090.native_runner) as long,
+        ):
+            medium.cache_info = guarded_call.cache_info
+            for dtype in (torch.float16, torch.bfloat16):
+                for length, dim in ((128, 16), (1024, 64), (1024, 128), (4096, 64), (4096, 128)):
+                    for causal in (False, True):
+                        with self.subTest(dtype=dtype, length=length, dim=dim, causal=causal):
+                            inputs = [
+                                torch.randn(
+                                    1, 16, length, dim, device="cuda", dtype=dtype, requires_grad=True
+                                )
+                                for _ in range(3)
+                            ]
+                            dout = torch.randn_like(inputs[0])
+                            for operation in (
+                                api.scaled_dot_product_attention,
+                                api.automatic_scaled_dot_product_attention,
+                            ):
+                                selected = short if length == 128 else medium if length == 1024 else long
+                                previous_calls = selected.call_count
+                                out = operation(*inputs, is_causal=causal)
+                                self.assertEqual(selected.call_count, previous_calls + 1)
+                                actual = out, *torch.autograd.grad(out, inputs, dout)
+                                # Bound oracle memory independently of the full kernel's head count.
+                                for head in range(0, 16, 2):
+                                    self.assert_rounded_reference(
+                                        tuple(t[:, head : head + 2] for t in actual),
+                                        tuple(t[:, head : head + 2] for t in inputs),
+                                        dout[:, head : head + 2],
+                                        causal,
+                                    )
+                            cases += 1
+            self.assertGreater(short.call_count, 0)
+            self.assertGreater(medium.call_count, 0)
+            self.assertGreater(long.call_count, 0)
+        # Contiguous inputs can satisfy the layout guards during inference;
+        # gradient policy must still keep them on ordinary CuTe.
+        with (
+            torch.inference_mode(),
+            patch.object(rtx4090, "_short_runner", side_effect=AssertionError("training route")),
+            patch.object(rtx4090, "_s1024_guarded_call", side_effect=AssertionError("training route")),
+            patch.object(rtx4090, "native_runner", side_effect=AssertionError("training route")),
+        ):
+            for length, dim in ((128, 16), (1024, 64), (4096, 128)):
+                inputs = [
+                    torch.randn(1, 16, length, dim, device="cuda", dtype=torch.bfloat16) for _ in range(3)
+                ]
+                out = api.automatic_scaled_dot_product_attention(*inputs)
+                torch.testing.assert_close(out, runtime._native_sdpa(*inputs), rtol=0.02, atol=0.02)
+        print(
+            json.dumps({"optional_training_cases": cases, "apis_per_case": 2, "inference_controls": 3}),
+            flush=True,
+        )
+
+    def test_optional_backward_obeys_live_determinism(self):
+        from cute_attention.vendor.kohakufa_cute import fa4_sm80
+        from .test_determinism import deterministic
+
+        if torch.cuda.get_device_name() != "NVIDIA GeForce RTX 4090" or not fa4_sm80.available():
+            self.skipTest("Requires the qualified optional runtime and full RTX 4090.")
+        inputs = [
+            torch.randn(1, 16, 1024, 64, device="cuda", dtype=torch.bfloat16, requires_grad=True)
+            for _ in range(3)
+        ]
+        dout = torch.randn_like(inputs[0])
+        with deterministic(False):
+            out = api.scaled_dot_product_attention(*inputs)
+        with deterministic(True), self.assertRaisesRegex(RuntimeError, "atomic_backward"):
+            torch.autograd.grad(out, inputs, dout)
+        # Select before enabling warn-only, because deterministic selection avoids atomics.
+        with deterministic(False):
+            out = api.scaled_dot_product_attention(*inputs)
+        with deterministic(True, warn_only=True), self.assertWarnsRegex(UserWarning, "atomic_backward"):
+            torch.autograd.grad(out, inputs, dout)
+        with deterministic(True):
+            reference = None
+            for _ in range(2):
+                out = api.scaled_dot_product_attention(*inputs)
+                actual = tuple(t.detach().clone() for t in (out, *torch.autograd.grad(out, inputs, dout)))
+                if reference is not None:
+                    for got, want in zip(actual, reference):
+                        self.assertTrue(torch.equal(got, want))
+                reference = actual
 
     def test_real_comfyui_model_patcher_and_attention_hook(self):
         if COMFYUI_ROOT is None:

@@ -6,10 +6,10 @@ from importlib.metadata import PackageNotFoundError, version
 import torch
 from packaging.version import Version
 
-from . import _ops
+from . import _ops, fa4_sm80
 
-_CAPABILITIES = {(8, 6), (8, 9), (9, 0), (10, 0), (10, 3), (12, 0), (12, 1)}
-_CENTERED_CAPABILITIES = {(8, 6), (8, 9), (9, 0), (10, 0), (10, 3), (12, 0), (12, 1)}
+_CAPABILITIES = {(8, 0), (8, 6), (8, 9), (9, 0), (10, 0), (10, 3), (12, 0), (12, 1)}
+_CENTERED_CAPABILITIES = {(8, 0), (8, 6), (8, 9), (9, 0), (10, 0), (10, 3), (12, 0), (12, 1)}
 _native_sdpa = torch._C._nn.scaled_dot_product_attention
 
 
@@ -18,6 +18,20 @@ def _extension():
     from .native import extension
 
     return extension()
+
+
+def _try_rtx4090_s1024(q, k, v, mask, dropout, causal, scale, gqa):
+    if (
+        torch.compiler.is_compiling()
+        or getattr(q, "ndim", None) != 4
+        or q.device.type != "cuda"
+        or q.shape[2] != 1024
+        or q.shape[-1] not in (64, 128)
+    ):
+        return None
+    from .fa4_sm80 import rtx4090
+
+    return rtx4090.try_s1024_attention(q, k, v, mask, dropout, causal, scale, gqa)
 
 
 @torch.compiler.assume_constant_result
@@ -79,7 +93,7 @@ def _validate(q, k, v, mask, dropout, causal, gqa, *, combined_mask=False):
         if causal and not combined_mask:
             raise ValueError("CuTe attention requires causal visibility folded into the boolean mask.")
     if torch.cuda.get_device_capability(q.device) not in _CAPABILITIES:
-        raise ValueError("CuTe attention requires sm_86, sm_89, sm_90, sm_100, sm_103, sm_120 or sm_121.")
+        raise ValueError("CuTe attention requires sm_80, sm_86, sm_89, sm_90, sm_100, sm_103, sm_120 or sm_121.")
 
 
 def _center_keys(k):
@@ -102,6 +116,11 @@ def attention(q, k, v, *, mask=None, causal=False, scale=None, center_keys=False
         k = _center_keys(k)
     if torch.compiler.is_compiling():
         return _ops.attention(q, k, v, mask=mask, causal=causal, scale=scale)
+    selected = _try_rtx4090_s1024(q, k, v, mask, 0, causal, scale, True)
+    if selected is not None:
+        return selected
+    if fa4_sm80.compatible(q, k, v, mask, 0, causal, scale, True):
+        return fa4_sm80.attention(q, k, v, causal=causal, scale=scale)
     return _extension().attention(q, k, v, mask, scale, causal)
 
 
@@ -109,6 +128,13 @@ def scaled_dot_product_attention(
     query, key, value, attn_mask=None, dropout_p=0.0, is_causal=False, scale=None, enable_gqa=False
 ):
     """Strict CuTe implementation with the PyTorch SDPA argument convention."""
+    selected = _try_rtx4090_s1024(query, key, value, attn_mask, dropout_p, is_causal, scale, enable_gqa)
+    if selected is not None:
+        return selected
+    if not torch.compiler.is_compiling() and fa4_sm80.compatible(
+        query, key, value, attn_mask, dropout_p, is_causal, scale, enable_gqa
+    ):
+        return fa4_sm80.attention(query, key, value, causal=is_causal, scale=scale)
     if torch.compiler.is_compiling() or _extension.cache_info().currsize == 0:
         _validate(query, key, value, attn_mask, dropout_p, is_causal, enable_gqa)
         if torch.compiler.is_compiling():
@@ -121,6 +147,13 @@ def automatic_scaled_dot_product_attention(
 ):
     """Select centered CuTe kernels on supported GPUs, native SDPA for unsupported calls."""
     if query.device.type == "cuda":
+        selected = _try_rtx4090_s1024(query, key, value, attn_mask, dropout_p, is_causal, scale, enable_gqa)
+        if selected is not None:
+            return selected
+        if not torch.compiler.is_compiling() and fa4_sm80.compatible(
+            query, key, value, attn_mask, dropout_p, is_causal, scale, enable_gqa
+        ):
+            return fa4_sm80.attention(query, key, value, causal=is_causal, scale=scale)
         if not torch.compiler.is_compiling() and _extension.cache_info().currsize:
             return _extension().automatic_sdpa(query, key, value, attn_mask, dropout_p, is_causal, scale, enable_gqa)
         if _compatible(query, key, value, attn_mask, dropout_p, is_causal, enable_gqa) and _runtime_available():

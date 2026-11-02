@@ -1,0 +1,337 @@
+{
+  "date": "2026-11-02",
+  "kohakufa_revision": "30704427809008e83ad38174e7c1780016c44258",
+  "kohakufa_release": "0.4.0",
+  "comfyui_revision": "35060f0156181ae78a86b10f098f67ce8e83697f",
+  "comfyui_version": "0.43.0",
+  "native_source_sha256": "a398062fecd9bbda0873e10f23e6783148bbe4709d63d6ceee2f334e9ed6724a",
+  "packaging": {
+    "source_files": 56,
+    "byte_identical_to_upstream": 45,
+    "documented_adapted_files": 11,
+    "imported_python_submodules": 53,
+    "sdist_and_wheel_build": true
+  },
+  "macos_cpu": {
+    "python": "3.13.18",
+    "torch": "2.15.0",
+    "tests_passed": 52
+  },
+  "base": {
+    "runtime": {
+      "python": "3.12.3",
+      "cuda": "13.2",
+      "packages": {
+        "torch": "2.15.0+cu132",
+        "nvidia-cutlass-dsl": "4.8.1",
+        "apache-tvm-ffi": "0.1.15.post0",
+        "triton": "3.9.0",
+        "ninja": "1.13.2",
+        "quack-kernels": null,
+        "torch-c-dlpack-ext": null,
+        "flash-attn-4": null
+      },
+      "gpu": {
+        "name": "NVIDIA GeForce RTX 4090",
+        "capability": [
+          8,
+          9
+        ],
+        "multiprocessors": 128,
+        "shared_memory_per_block_optin": 101376,
+        "driver": "595.99.02",
+        "power_limit_watts": 450.0
+      }
+    },
+    "validation": {
+      "cpu_tests_passed": 52,
+      "gpu_groups_passed": 7,
+      "gpu_groups_skipped": 2,
+      "comfyui_loader_passed": true,
+      "boundary": {
+        "ada_boundary_cases": 90,
+        "largest_relative_error": 0.002235570685304844
+      },
+      "math_reference_max_gradient_relative_error": {
+        "torch.float16": 0.00038425050854669536,
+        "torch.bfloat16": 0.003056738847207426
+      },
+      "optional_training": null
+    }
+  },
+  "qualified": {
+    "runtime": {
+      "python": "3.13.18",
+      "cuda": "13.2",
+      "packages": {
+        "torch": "2.15.0+cu132",
+        "nvidia-cutlass-dsl": "4.8.1",
+        "apache-tvm-ffi": "0.1.15.post0",
+        "triton": "3.9.0",
+        "ninja": "1.13.2",
+        "quack-kernels": "0.6.5",
+        "torch-c-dlpack-ext": "0.1.5",
+        "flash-attn-4": "4.0.0b38.dev3+g4616f51"
+      },
+      "gpu": {
+        "name": "NVIDIA GeForce RTX 4090",
+        "capability": [
+          8,
+          9
+        ],
+        "multiprocessors": 128,
+        "shared_memory_per_block_optin": 101376,
+        "driver": "595.99.02",
+        "power_limit_watts": 450.0
+      }
+    },
+    "validation": {
+      "cpu_tests_passed": 52,
+      "gpu_groups_passed": 9,
+      "gpu_groups_skipped": 0,
+      "comfyui_loader_passed": true,
+      "boundary": {
+        "ada_boundary_cases": 90,
+        "largest_relative_error": 0.0022288607654451097
+      },
+      "math_reference_max_gradient_relative_error": {
+        "torch.float16": 0.00036648437622010345,
+        "torch.bfloat16": 0.003129340290200401
+      },
+      "optional_training": {
+        "optional_training_cases": 20,
+        "apis_per_case": 2,
+        "inference_controls": 3
+      }
+    }
+  },
+  "inference_benchmark": {
+    "runtime": "qualified",
+    "metadata": {
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "torch": "2.15.0+cu132",
+      "cuda": "13.2",
+      "dtype": "bfloat16",
+      "batch": 1,
+      "heads": 16,
+      "causal": false,
+      "layout": "BHSD view of BSHD storage",
+      "method": "CUDA events; median of repeated means; compilation and warm-up excluded",
+      "iterations": 30,
+      "repeats": 5,
+      "grad_mode": "inference_mode",
+      "backend_native": "Torch default SDPA selection",
+      "backend_cute": "ordinary vendored CuTe through process strict dispatcher",
+      "seed": 42,
+      "warmup_calls_per_backend": 5
+    },
+    "measurements": [
+      {
+        "seq": 1024,
+        "dim": 64,
+        "native": {
+          "median_ms": 0.03529599905014038,
+          "samples_ms": [
+            0.035290666421254474,
+            0.035293865203857425,
+            0.035327998797098796,
+            0.03529599905014038,
+            0.03543039957682292
+          ]
+        },
+        "cute_process_override": {
+          "median_ms": 0.03597653309504191,
+          "samples_ms": [
+            0.03590826590855916,
+            0.03597653309504191,
+            0.03577173153559367,
+            0.03597653309504191,
+            0.03601066668828328
+          ]
+        },
+        "native_over_cute": 0.9810839459404354
+      },
+      {
+        "seq": 1024,
+        "dim": 128,
+        "native": {
+          "median_ms": 0.06761813163757324,
+          "samples_ms": [
+            0.06758399804433186,
+            0.06765226523081462,
+            0.06761813163757324,
+            0.06765226523081462,
+            0.06761813163757324
+          ]
+        },
+        "cute_process_override": {
+          "median_ms": 0.06399999856948853,
+          "samples_ms": [
+            0.06406826575597127,
+            0.06423360109329224,
+            0.06399999856948853,
+            0.06396586497624715,
+            0.06396480003992716
+          ]
+        },
+        "native_over_cute": 1.056533330452442
+      },
+      {
+        "seq": 1024,
+        "dim": 256,
+        "native": {
+          "median_ms": 0.1281706651051839,
+          "samples_ms": [
+            0.1281706651051839,
+            0.12813653151194254,
+            0.1282047986984253,
+            0.12793493270874023,
+            0.1281706651051839
+          ]
+        },
+        "cute_process_override": {
+          "median_ms": 0.12639573415120442,
+          "samples_ms": [
+            0.12639573415120442,
+            0.1264298677444458,
+            0.12639573415120442,
+            0.1264298677444458,
+            0.1263274669647217
+          ]
+        },
+        "native_over_cute": 1.014042649191437
+      },
+      {
+        "seq": 1024,
+        "dim": 512,
+        "native": {
+          "median_ms": 0.5101226806640625,
+          "samples_ms": [
+            0.5112832069396973,
+            0.5101226806640625,
+            0.5101183891296387,
+            0.5116565386454265,
+            0.5095082600911458
+          ]
+        },
+        "cute_process_override": {
+          "median_ms": 0.45769386291503905,
+          "samples_ms": [
+            0.45762561162312826,
+            0.4579327901204427,
+            0.45789868036905923,
+            0.4573184013366699,
+            0.45769386291503905
+          ]
+        },
+        "native_over_cute": 1.1145499688702527
+      },
+      {
+        "seq": 4096,
+        "dim": 64,
+        "native": {
+          "median_ms": 0.46353066762288414,
+          "samples_ms": [
+            0.46329174041748045,
+            0.46353066762288414,
+            0.4635648091634115,
+            0.46349652608235675,
+            0.46383787790934244
+          ]
+        },
+        "cute_process_override": {
+          "median_ms": 0.4690602620442708,
+          "samples_ms": [
+            0.47137813568115233,
+            0.471340815226237,
+            0.4690602620442708,
+            0.4295647939046224,
+            0.4298752148946126
+          ]
+        },
+        "native_over_cute": 0.9882113347285326
+      },
+      {
+        "seq": 4096,
+        "dim": 128,
+        "native": {
+          "median_ms": 0.8434346516927084,
+          "samples_ms": [
+            0.8457578659057617,
+            0.8398922602335612,
+            0.8415573120117188,
+            0.843502934773763,
+            0.8434346516927084
+          ]
+        },
+        "cute_process_override": {
+          "median_ms": 0.8336725234985352,
+          "samples_ms": [
+            0.8271189371744792,
+            0.831658681233724,
+            0.8366122563680013,
+            0.8347647984822592,
+            0.8336725234985352
+          ]
+        },
+        "native_over_cute": 1.0117097876192513
+      },
+      {
+        "seq": 4096,
+        "dim": 256,
+        "native": {
+          "median_ms": 1.775104014078776,
+          "samples_ms": [
+            1.7751380920410156,
+            1.7750357309977214,
+            1.7749674479166666,
+            1.775104014078776,
+            1.7751722971598307
+          ]
+        },
+        "cute_process_override": {
+          "median_ms": 1.7713141123453775,
+          "samples_ms": [
+            1.7421365102132162,
+            1.7500160217285157,
+            1.7713141123453775,
+            1.7719295501708985,
+            1.771827189127604
+          ]
+        },
+        "native_over_cute": 1.0021395989039912
+      },
+      {
+        "seq": 4096,
+        "dim": 512,
+        "native": {
+          "median_ms": 6.840620930989584,
+          "samples_ms": [
+            6.880563354492187,
+            6.840620930989584,
+            6.839090983072917,
+            6.842743428548177,
+            6.839876302083334
+          ]
+        },
+        "cute_process_override": {
+          "median_ms": 6.397134908040365,
+          "samples_ms": [
+            6.3390345255533855,
+            6.396381632486979,
+            6.397134908040365,
+            6.398805236816406,
+            6.399214680989584
+          ]
+        },
+        "native_over_cute": 1.069325726176544
+      }
+    ]
+  },
+  "limitations": [
+    "Only RTX 4090 GPU kernels validated.",
+    "No full image/video generation with pretrained checkpoints.",
+    "Inference timings measure attention calls, not end-to-end ComfyUI.",
+    "No performance comparison to an earlier vendor revision on this host."
+  ]
+}
