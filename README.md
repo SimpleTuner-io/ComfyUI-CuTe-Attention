@@ -16,7 +16,9 @@ python -m pip install -r requirements.txt
 Restart ComfyUI. Requires Python 3.12+, CUDA-enabled Torch 2.11+, Linux, an NVIDIA
 GPU supported by the vendored kernels, and a C++17 compiler for CuTe execution.
 The native launcher and kernels compile on first use, which can take a while.
-The KohakuFA-CuTe source is included here; it is never downloaded at runtime.
+The vendored source is KohakuFA-CuTe 0.4.0 at
+`30704427809008e83ad38174e7c1780016c44258`; see [provenance](VENDORED.md).
+It is included here and is never downloaded at runtime.
 CPU and other devices use native Torch SDPA in `auto` mode.
 
 For a CUDA 13 Torch environment, also install the matching DSL libraries:
@@ -46,6 +48,8 @@ process nodes run, the last one executed sets the process default. The node
 re-executes on each queued prompt so cached node outputs do not skip this action.
 Use model scope when different workflow branches need different settings.
 
+Disabling the process setting does not remove overrides from previously patched
+`MODEL` outputs. Use the original model output to stop that model override.
 The lightweight Torch dispatcher remains installed after disabling the process
 setting; outside an active patched model it calls the original SDPA. Model scope
 uses execution-context state, restored even when the model raises. It does not
@@ -65,7 +69,7 @@ The vendored attention functions themselves retain upstream compiler support.
 
 CuTe supports matching FP16/BF16 CUDA tensors in `[B, H, S, D]` layout, head
 dimensions 1–512, GQA, causal attention, and broadcastable boolean masks (`True`
-means visible). Supported compute capabilities are SM86, SM89, SM90, SM100,
+means visible). Supported compute capabilities are SM80, SM86, SM89, SM90, SM100,
 SM103, SM120, and SM121. GQA requires `enable_gqa=True`. Explicit masks combined
 with `is_causal=True`, floating-point additive masks, dropout, FP32 inputs,
 unsupported shapes/devices, and missing CUDA dependencies use native SDPA in
@@ -80,8 +84,61 @@ Selecting CuTe does not guarantee a speedup. Benchmark your actual model and
 shapes, including first-use compilation separately from warm inference.
 See the [RTX 4090 validation and timings](results/README.md) for measured results
 and the tested ComfyUI environment.
-The [latest vendor refresh validation](results/vendor-sync-2026-10-31.md)
+The [latest vendor refresh validation](results/vendor-sync-2026-11-02.md)
 records the integration checks and hardware coverage for this snapshot.
+
+## Optional tuned runtime
+
+The normal install keeps the supported Torch 2.11+ environment. Some upstream
+0.4.0 schedules require a separate, exactly qualified runtime: **Python 3.13,
+Torch 2.15.0 built for CUDA 13.2**, CUTLASS DSL 4.8.1, TVM FFI 0.1.15.post0,
+quack-kernels 0.6.5, torch-c-dlpack-ext 0.1.5, and a pinned FlashAttention 4
+source revision. With that Python/Torch environment already installed, run:
+
+```sh
+python -m pip install '.[cuda,sm80-fa4]'
+python -m pip install 'nvidia-cutlass-dsl[cu13]==4.8.1'
+```
+
+This optional install needs Git and may replace packages in ComfyUI's environment;
+check compatibility with your other nodes first. A different Python, CUDA build,
+package version, or FlashAttention source fingerprint leaves these optional paths
+unavailable. Restart after changing dependencies. The ordinary CuTe backend
+remains available under its base requirements.
+
+Both node modes inherit upstream's automatic selection. On a full RTX 4090,
+the new short and shared schedules target contiguous, aligned B1/H16 training
+calls at S128/D16 and S1024 or S4096 with D64/D128, with additional policy
+checks. **Those automatic RTX 4090 paths require gradients; ordinary ComfyUI
+inference keeps the ordinary CuTe path.** Upstream's training speedups therefore
+do not establish faster image or video generation. See the pinned
+[automatic selection notes](https://github.com/SimpleTuner-io/KohakuFA-CuTe/blob/30704427809008e83ad38174e7c1780016c44258/docs/rtx4090-automatic.md)
+and [S1024 update](https://github.com/SimpleTuner-io/KohakuFA-CuTe/blob/30704427809008e83ad38174e7c1780016c44258/docs/rtx4090-s1024-host.md).
+
+Other automatic paths have their own hardware and input guards. Upstream also
+includes explicit experimental entry points, including Hopper/H200 and selected
+A40, RTX 3090, and GB10 schedules. Installing an extra does not make the node
+select every explicit upstream entry point; this node exposes only upstream's
+public automatic and strict SDPA APIs. The `hopper-fa4` extra is retained for
+upstream API experiments and is unnecessary for normal node use.
+
+## Precision and determinism
+
+Version 0.4.0 changes the default backward arithmetic. Probabilities and score
+gradients are rounded once to the FP16/BF16 input dtype, with FP32 accumulation.
+The backward normalization uses the actual rounded forward output. Earlier
+compensated/residual products are no longer enabled by default. Small terms may
+underflow and cancellation-sensitive gradients can differ from both the previous
+vendor snapshot and FP64 mathematical attention. The node adds no compensation
+or key-centering option. See upstream's
+[arithmetic contract](https://github.com/SimpleTuner-io/KohakuFA-CuTe/blob/30704427809008e83ad38174e7c1780016c44258/README.md).
+
+`mode=strict` controls backend fallback. For deterministic training, separately
+set `torch.use_deterministic_algorithms(True)` before forward execution, warm-up,
+or graph capture. This excludes optional unordered atomic-gradient schedules.
+Enabling it after a forward selected such a schedule makes backward raise;
+`warn_only=True` warns and permits execution. CUDA graph replay does not recheck
+host policy, so recapture graphs after changing it.
 
 ## Development
 
@@ -96,11 +153,14 @@ python -m tools.benchmark_attention
 
 The GPU validation command requires a supported CUDA GPU and the CUDA runtime
 dependencies. It tests real CuTe dispatch, layouts, masks, GQA, gradients, and
-native fallback. Unit tests exercise scope isolation and restoration on errors.
+native fallback. Boundary and graph checks use the rounded-operand reference;
+FP64 comparisons remain a separate mathematical accuracy check. Unit tests
+exercise scope isolation, restoration on errors, and deterministic policy.
 See `AGENTS.md` for the privacy and publication workflow, and `VENDORED.md` for
 source provenance and local integration changes.
 
 ## License
 
-AGPL-3.0-or-later. See `LICENSE`, `NOTICE`, and `LICENSES/BSD-3-Clause.txt` for
-upstream attribution and retained BSD notices.
+AGPL-3.0-or-later. See `LICENSE`, `NOTICE`, and `LICENSES/` for retained
+NVIDIA CUTLASS and FlashAttention BSD notices and author attribution. Optional
+FlashAttention dependencies retain their own licenses.
