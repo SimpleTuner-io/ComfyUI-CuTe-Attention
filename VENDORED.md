@@ -2,7 +2,16 @@
 
 Source: <https://github.com/SimpleTuner-io/KohakuFA-CuTe>
 
-Revision: `30704427809008e83ad38174e7c1780016c44258` (0.4.0)
+Revision: `c6f72ca8d9c9e9cb053cce3722e5f6f2f7aa0704` (0.4.0)
+
+The 2026-11-13 refresh imports all 60 tracked package files, including explicit
+2D `neighborhood_attention`, geometry, scheduling, custom operators, and the
+normalized dQ/reconstructed dK correction defaults. The new PMRF node adapts
+NATTEN's `[B, height, width, heads, D]` layout to the public neighborhood API.
+No neighborhood kernel arithmetic is changed locally. The neighborhood custom
+operators also use the isolated `comfyui_cute_attention` namespace.
+See [PMRF and regression validation](results/neighborhood-pmrf-2026-11-13.md)
+for this snapshot's RTX 4090 checks.
 
 The 2026-11-02 refresh adds SM80 support, optional pinned FlashAttention-derived
 SM80/Hopper packages, short and shared scheduling, live deterministic-backward
@@ -53,5 +62,5 @@ vendored imports. Precision-owner tests remain from the preceding snapshot and
 cover retained experimental helpers, not the default precision policy.
 
 Historical benchmark and validation records retain their original revisions.
-Current integration coverage is recorded in
+The preceding integration coverage is recorded in
 [the refresh report](results/vendor-sync-2026-11-02.md).

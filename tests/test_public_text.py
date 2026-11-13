@@ -1,7 +1,9 @@
 """Exercise the client-side guard without publishing any content."""
 
+import importlib.util
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
@@ -120,6 +122,31 @@ class PublicTextTests(unittest.TestCase):
         self.commit()
         self.git("config", "user.name", "Project Maintainers")
         self.assert_blocked(self.guard("--history"))
+
+    def test_history_scans_deleted_filename(self):
+        name = self.private_name + ".txt"
+        self.write(name, "Safe content", stage=True)
+        self.commit()
+        self.git("rm", "--quiet", name)
+        self.commit()
+        self.assertEqual(self.guard("--staged").returncode, 0)
+        self.assert_blocked(self.guard("--history"))
+
+    def test_tree_scans_names_without_interpreting_binary_ids(self):
+        spec = importlib.util.spec_from_file_location("public_text_guard", GUARD)
+        guard = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(guard)
+        private = [re.compile("binary_fixture")]
+        for size in (20, 32):
+            digest = b"binary_fixture".ljust(size, b"\xff")
+            safe = b"100644 notes.txt\0" + digest
+            guard.scan_tree(safe + safe, private, size)
+            with self.assertRaises(guard.Blocked):
+                guard.scan_tree(b"100644 binary_fixture.txt\0" + digest, private, size)
+            for malformed in (safe[:-1], b"100644 missing-terminator", b"invalid notes.txt\0" + digest):
+                with self.subTest(size=size, malformed=malformed):
+                    with self.assertRaises(guard.Blocked):
+                        guard.scan_tree(malformed, private, size)
 
     def test_push_tip_outside_refs_is_scanned(self):
         self.commit()

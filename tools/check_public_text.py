@@ -70,6 +70,23 @@ def scan(data, private):
         raise Blocked
 
 
+def scan_tree(data, private, oid_size):
+    # Tree entries are mode + filename + NUL + a binary object ID. Hash bytes
+    # are not public text and can coincidentally resemble a private identity.
+    if oid_size not in (20, 32):
+        raise Blocked
+    offset = 0
+    while offset < len(data):
+        end = data.find(b"\0", offset)
+        if end < 0 or end + 1 + oid_size > len(data):
+            raise Blocked
+        mode, separator, name = data[offset:end].partition(b" ")
+        if mode not in (b"40000", b"100644", b"100755", b"120000", b"160000") or not separator or not name:
+            raise Blocked
+        scan(name, private)
+        offset = end + 1 + oid_size
+
+
 def scan_objects(objects, private):
     with subprocess.Popen(
         ["git", "cat-file", "--batch"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
@@ -85,7 +102,10 @@ def scan_objects(objects, private):
                 data = process.stdout.read(size)
                 if len(data) != size or process.stdout.read(1) != b"\n":
                     raise Blocked
-                scan(data, private)
+                if header[1] == b"tree":
+                    scan_tree(data, private, len(oid) // 2)
+                else:
+                    scan(data, private)
         finally:
             process.stdin.close()
             process.wait()

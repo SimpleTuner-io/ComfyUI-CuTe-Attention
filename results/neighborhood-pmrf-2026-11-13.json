@@ -1,0 +1,518 @@
+{
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "python": "3.13.18",
+  "torch": "2.13.0+cu130",
+  "cuda": "13.0",
+  "steps": 25,
+  "seed": 123,
+  "precision": "bfloat16",
+  "input_shape": [
+    1,
+    512,
+    512,
+    3
+  ],
+  "neighborhood_blocks": 8,
+  "timing_boundary": "complete PMRF restoration node; CUDA synchronized wall time",
+  "image_agreement_gate": {
+    "max_mean_absolute_error": 0.00784313725490196,
+    "min_psnr_db": 35
+  },
+  "runs": [
+    {
+      "backend": "natten",
+      "phase": "first_call",
+      "seconds": 12.520109654054977,
+      "calls": 200,
+      "shapes": [
+        [
+          [
+            1,
+            64,
+            64,
+            8,
+            64
+          ],
+          "torch.float32",
+          "torch.bfloat16",
+          "7",
+          1.0
+        ],
+        [
+          [
+            1,
+            128,
+            128,
+            4,
+            64
+          ],
+          "torch.float32",
+          "torch.bfloat16",
+          "7",
+          1.0
+        ]
+      ],
+      "output_shape": [
+        1,
+        512,
+        512,
+        3
+      ]
+    },
+    {
+      "backend": "natten",
+      "phase": "warm",
+      "seconds": 1.305529408971779,
+      "calls": 200,
+      "shapes": [
+        [
+          [
+            1,
+            64,
+            64,
+            8,
+            64
+          ],
+          "torch.float32",
+          "torch.bfloat16",
+          "7",
+          1.0
+        ],
+        [
+          [
+            1,
+            128,
+            128,
+            4,
+            64
+          ],
+          "torch.float32",
+          "torch.bfloat16",
+          "7",
+          1.0
+        ]
+      ],
+      "output_shape": [
+        1,
+        512,
+        512,
+        3
+      ]
+    },
+    {
+      "backend": "natten",
+      "phase": "warm",
+      "seconds": 1.284330261987634,
+      "calls": 200,
+      "shapes": [
+        [
+          [
+            1,
+            64,
+            64,
+            8,
+            64
+          ],
+          "torch.float32",
+          "torch.bfloat16",
+          "7",
+          1.0
+        ],
+        [
+          [
+            1,
+            128,
+            128,
+            4,
+            64
+          ],
+          "torch.float32",
+          "torch.bfloat16",
+          "7",
+          1.0
+        ]
+      ],
+      "output_shape": [
+        1,
+        512,
+        512,
+        3
+      ]
+    },
+    {
+      "backend": "natten",
+      "phase": "warm",
+      "seconds": 1.3287069930229336,
+      "calls": 200,
+      "shapes": [
+        [
+          [
+            1,
+            64,
+            64,
+            8,
+            64
+          ],
+          "torch.float32",
+          "torch.bfloat16",
+          "7",
+          1.0
+        ],
+        [
+          [
+            1,
+            128,
+            128,
+            4,
+            64
+          ],
+          "torch.float32",
+          "torch.bfloat16",
+          "7",
+          1.0
+        ]
+      ],
+      "output_shape": [
+        1,
+        512,
+        512,
+        3
+      ]
+    },
+    {
+      "backend": "cute",
+      "phase": "first_call",
+      "seconds": 10.428279916057363,
+      "calls": 200,
+      "shapes": [
+        [
+          [
+            1,
+            64,
+            64,
+            8,
+            64
+          ],
+          "torch.float32",
+          "torch.bfloat16",
+          "7",
+          1.0
+        ],
+        [
+          [
+            1,
+            128,
+            128,
+            4,
+            64
+          ],
+          "torch.float32",
+          "torch.bfloat16",
+          "7",
+          1.0
+        ]
+      ],
+      "output_shape": [
+        1,
+        512,
+        512,
+        3
+      ]
+    },
+    {
+      "backend": "cute",
+      "phase": "warm",
+      "seconds": 1.2347324290312827,
+      "calls": 200,
+      "shapes": [
+        [
+          [
+            1,
+            64,
+            64,
+            8,
+            64
+          ],
+          "torch.float32",
+          "torch.bfloat16",
+          "7",
+          1.0
+        ],
+        [
+          [
+            1,
+            128,
+            128,
+            4,
+            64
+          ],
+          "torch.float32",
+          "torch.bfloat16",
+          "7",
+          1.0
+        ]
+      ],
+      "output_shape": [
+        1,
+        512,
+        512,
+        3
+      ]
+    },
+    {
+      "backend": "cute",
+      "phase": "warm",
+      "seconds": 1.2218619780614972,
+      "calls": 200,
+      "shapes": [
+        [
+          [
+            1,
+            64,
+            64,
+            8,
+            64
+          ],
+          "torch.float32",
+          "torch.bfloat16",
+          "7",
+          1.0
+        ],
+        [
+          [
+            1,
+            128,
+            128,
+            4,
+            64
+          ],
+          "torch.float32",
+          "torch.bfloat16",
+          "7",
+          1.0
+        ]
+      ],
+      "output_shape": [
+        1,
+        512,
+        512,
+        3
+      ]
+    },
+    {
+      "backend": "cute",
+      "phase": "warm",
+      "seconds": 1.2938755910145119,
+      "calls": 200,
+      "shapes": [
+        [
+          [
+            1,
+            64,
+            64,
+            8,
+            64
+          ],
+          "torch.float32",
+          "torch.bfloat16",
+          "7",
+          1.0
+        ],
+        [
+          [
+            1,
+            128,
+            128,
+            4,
+            64
+          ],
+          "torch.float32",
+          "torch.bfloat16",
+          "7",
+          1.0
+        ]
+      ],
+      "output_shape": [
+        1,
+        512,
+        512,
+        3
+      ]
+    }
+  ],
+  "comparison": {
+    "mean_absolute_error": 5.706089359591715e-05,
+    "max_absolute_error": 0.007843137718737125,
+    "psnr_db": 66.38297285143949,
+    "note": "One example and seed; not a perceptual quality qualification or FP32 parity claim."
+  },
+  "environment": {
+    "packages": {
+      "torch": "2.13.0+cu130",
+      "torchvision": "0.28.0+cu130",
+      "nvidia-cutlass-dsl": "4.8.1",
+      "apache-tvm-ffi": "0.1.15.post0",
+      "triton": "3.7.1",
+      "cuda-bindings": "13.0.3",
+      "natten": "0.21.7+torch2130cu130",
+      "basicsr": "1.4.2",
+      "facexlib": "0.3.0",
+      "realesrgan": "0.3.0",
+      "pytorch-lightning": "2.6.6",
+      "huggingface-hub": "2.4.0"
+    },
+    "device": {
+      "name": "NVIDIA GeForce RTX 4090",
+      "capability": [
+        8,
+        9
+      ],
+      "sm_count": 128
+    },
+    "model_revision": "67e0aa382ab4ddc56fdbb576ca8ca5928768113c",
+    "input_sha256": "68b6a6e507852f97a257b377f0621a6fb692666f5afe2d2c579d151600c34f9e"
+  },
+  "sources": {
+    "kohakufa_cute": "c6f72ca8d9c9e9cb053cce3722e5f6f2f7aa0704",
+    "comfyui": "b894a864de9c0c73cc0ca848acd660fca890cebc",
+    "comfyui_pmrf": "e105c042161785b6fbbae840e70817896c1eebf4"
+  },
+  "device_details": {
+    "driver": "610.57.04",
+    "power_limit_w": 400,
+    "memory_mib": 24564
+  },
+  "validation": {
+    "cpu_tests_macos": 58,
+    "cpu_tests_linux": 58,
+    "privacy_tests": 20,
+    "neighborhood_initial_groups": 3,
+    "precision_boundary_groups": 1,
+    "dense_passed": 7,
+    "dense_optional_skipped": 2,
+    "comfyui_loader": "passed",
+    "http_queue": {
+      "status": "passed",
+      "steps": 2,
+      "neighborhood_calls": 16
+    },
+    "package_build": "passed",
+    "vendored_package_files": 60
+  },
+  "neighborhood_numerics": [
+    {
+      "dtype": "torch.float16",
+      "window": 3,
+      "scale": 0.125,
+      "relative_l2": [
+        0.00023994954387986992,
+        0.0002795962392952543,
+        0.0002958757631442871,
+        0.0002951750301444149
+      ]
+    },
+    {
+      "dtype": "torch.float16",
+      "window": [
+        4,
+        2
+      ],
+      "scale": 1.0,
+      "relative_l2": [
+        0.00019810112594986475,
+        0.00027078480925422335,
+        0.00028786733985868105,
+        0.0002552284166436807
+      ]
+    },
+    {
+      "dtype": "torch.float16",
+      "window": [
+        3,
+        5
+      ],
+      "scale": -0.25,
+      "relative_l2": [
+        0.0002261944064573012,
+        0.0002683856085905084,
+        0.00029358559242551583,
+        0.00028375154304552337
+      ]
+    },
+    {
+      "dtype": "torch.float16",
+      "window": 3,
+      "scale": 0.0,
+      "relative_l2": [
+        0.0002016560797814494,
+        0.0,
+        0.0,
+        0.0003213945007130948
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "window": 3,
+      "scale": 0.125,
+      "relative_l2": [
+        0.0019120610176914668,
+        0.00218626431478876,
+        0.0024720870575477057,
+        0.002262769753816771
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "window": [
+        4,
+        2
+      ],
+      "scale": 1.0,
+      "relative_l2": [
+        0.0015245593897716685,
+        0.0019862262151450626,
+        0.002257759195307932,
+        0.0020592211214849852
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "window": [
+        3,
+        5
+      ],
+      "scale": -0.25,
+      "relative_l2": [
+        0.001831267543011015,
+        0.0021202002322820873,
+        0.0023634277348060844,
+        0.002378823281733392
+      ]
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "window": 3,
+      "scale": 0.0,
+      "relative_l2": [
+        0.0016173428587364126,
+        0.0,
+        0.0,
+        0.0025377684080638203
+      ]
+    },
+    {
+      "comparison": "natten-cutlass-fna",
+      "dtype": "torch.float16",
+      "relative_l2": 7.02480974723585e-05
+    },
+    {
+      "comparison": "natten-cutlass-fna",
+      "dtype": "torch.bfloat16",
+      "relative_l2": 0.0005611557862721384
+    }
+  ],
+  "warm_medians_seconds": {
+    "natten": 1.305529408971779,
+    "cute": 1.2347324290312827
+  }
+}
