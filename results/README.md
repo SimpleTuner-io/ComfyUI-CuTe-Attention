@@ -1,8 +1,9 @@
 # RTX 4090 validation
 
 For the current vendor snapshot, see the
-[2026-11-02 refresh validation](vendor-sync-2026-11-02.md). The timings and GPU
-results below describe the earlier source revision identified here.
+[2026-11-13 neighborhood and PMRF validation](neighborhood-pmrf-2026-11-13.md).
+The [2026-11-02 refresh](vendor-sync-2026-11-02.md) and the timings and GPU
+results below describe the earlier source revisions identified in those reports.
 
 Validated on 2026-10-28 against ComfyUI **0.43.0**, revision
 `35060f0156181ae78a86b10f098f67ce8e83697f`, using KohakuFA-CuTe revision
