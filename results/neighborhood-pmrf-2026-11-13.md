@@ -35,6 +35,11 @@ All 58 unit tests passed on macOS (Python 3.13.18/Torch 2.15.0) and on the Linux
 GPU host. This includes all 20 privacy-guard tests. Source distribution and wheel
 builds passed; all 60 vendored package files are included.
 
+Publication follow-up: the privacy guard now parses Git tree filenames separately
+from binary object IDs, preventing hash bytes from causing false positives.
+All 22 guard tests passed locally after adding filename-history and binary-tree
+regressions. The GPU campaign counts above describe the original test snapshot.
+
 The CUDA neighborhood suite passed FP16/BF16 forward and backward comparisons
 against independently enumerated FP64 shifted windows, including transposed
 spatial views, rectangular/even windows, boundary tails, and positive, negative,
