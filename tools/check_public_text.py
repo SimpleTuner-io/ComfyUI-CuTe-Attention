@@ -7,8 +7,10 @@ import os
 from pathlib import Path
 import re
 import socket
+import struct
 import subprocess
 import sys
+import zlib
 
 BLOCKED = "Blocked: local machine identity was found in public text."
 SERVICE_IDENTITIES = {"root", "runner", "ubuntu", "user", "git", "nobody", "localhost"}
@@ -87,9 +89,69 @@ def scan_tree(data, private, oid_size):
         offset = end + 1 + oid_size
 
 
+def scan_blob(data, private):
+    if not data.startswith(b"\x89PNG\r\n\x1a\n"):
+        return scan(data, private)
+    # Prepared evidence images may contain only RGB(A) pixels, never metadata.
+    # Compressed pixels are not text. Visual contents still require review.
+    # Reject ancillary chunks, trailing payloads and malformed containers rather
+    # than granting a filename-based binary exemption. Keep text inputs strict.
+    offset, expected, stride = 8, None, None
+    compressed = bytearray()
+    finished = False
+    while offset < len(data):
+        if offset + 12 > len(data):
+            raise Blocked
+        size = struct.unpack_from(">I", data, offset)[0]
+        end = offset + 12 + size
+        if end > len(data):
+            raise Blocked
+        kind = data[offset + 4 : offset + 8]
+        payload = data[offset + 8 : end - 4]
+        if zlib.crc32(kind + payload) != struct.unpack_from(">I", data, end - 4)[0]:
+            raise Blocked
+        if kind == b"IHDR" and offset == 8 and size == 13:
+            width, height, depth, color, compression, filtering, interlace = struct.unpack(
+                ">IIBBBBB", payload
+            )
+            if (
+                not width
+                or not height
+                or depth != 8
+                or color not in (2, 6)
+                or any((compression, filtering, interlace))
+            ):
+                raise Blocked
+            stride = 1 + width * (3 if color == 2 else 4)
+            expected = height * stride
+            if expected > 64 * 1024 * 1024:
+                raise Blocked
+        elif kind == b"IDAT" and expected is not None:
+            compressed.extend(payload)
+        elif kind == b"IEND" and not size and compressed and end == len(data):
+            finished = True
+        else:
+            raise Blocked
+        offset = end
+    if not finished:
+        raise Blocked
+    try:
+        decoder = zlib.decompressobj()
+        pixels = decoder.decompress(compressed, expected + 1)
+    except zlib.error:
+        raise Blocked from None
+    if len(pixels) != expected or not decoder.eof or decoder.unused_data or decoder.unconsumed_tail:
+        raise Blocked
+    if any(pixels[row] > 4 for row in range(0, expected, stride)):
+        raise Blocked
+
+
 def scan_objects(objects, private):
     with subprocess.Popen(
-        ["git", "cat-file", "--batch"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL
+        ["git", "cat-file", "--batch"],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
     ) as process:
         try:
             for oid in dict.fromkeys(objects):
@@ -104,6 +166,8 @@ def scan_objects(objects, private):
                     raise Blocked
                 if header[1] == b"tree":
                     scan_tree(data, private, len(oid) // 2)
+                elif header[1] == b"blob":
+                    scan_blob(data, private)
                 else:
                     scan(data, private)
         finally:
@@ -153,8 +217,12 @@ def main():
     parser.add_argument("--staged", action="store_true", help="Scan every file in the complete index.")
     parser.add_argument("--metadata", action="store_true", help="Scan exact author and committer identities.")
     parser.add_argument("--history", action="store_true", help="Scan all objects reachable from local refs.")
-    parser.add_argument("--push-refs", action="store_true", help="Also scan pre-push tips from standard input.")
-    parser.add_argument("--message-stdin", action="store_true", help="Scan an exact commit message from standard input.")
+    parser.add_argument(
+        "--push-refs", action="store_true", help="Also scan pre-push tips from standard input."
+    )
+    parser.add_argument(
+        "--message-stdin", action="store_true", help="Scan an exact commit message from standard input."
+    )
     parser.add_argument("--message-file", action="append", default=[], metavar="FILE")
     parser.add_argument("--text-file", action="append", default=[], metavar="FILE")
     parser.add_argument("--file", action="append", default=[], metavar="FILE")

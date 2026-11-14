@@ -6,6 +6,8 @@ ComfyUI nodes using a vendored copy of
 - **CuTe Attention (KohakuFA)** replaces dense attention on a `MODEL`.
 - **CuTe Neighborhood Attention (PMRF)** restores an `IMAGE` using PMRF's
   neighborhood-attention layers and returns an `IMAGE`.
+- **CuTe 3D Neighborhood Decode (LTX VAE)** decodes a `LATENT` with the LTX
+  diffusion video VAE, replacing its 3D neighborhood attention.
 
 Importing the extension does not enable an override or load PMRF weights.
 
@@ -22,15 +24,68 @@ Restart ComfyUI. Requires Python 3.12+, CUDA-enabled Torch 2.11+, Linux, an NVID
 GPU supported by the vendored kernels, and a C++17 compiler for CuTe execution.
 The native launcher and kernels compile on first use, which can take a while.
 The vendored source is KohakuFA-CuTe 0.4.0 at
-`c6f72ca8d9c9e9cb053cce3722e5f6f2f7aa0704`; see [provenance](VENDORED.md).
+`cf97ce0e204f0ba970b04dcd5af5ad7d5c6e560d`; see [provenance](VENDORED.md).
 It is included here and is never downloaded at runtime.
-CPU and other devices use native Torch SDPA in `auto` mode.
+The dense node uses native Torch SDPA for unsupported calls in `auto` mode.
 
 For a CUDA 13 Torch environment, also install the matching DSL libraries:
 
 ```sh
 python -m pip install 'nvidia-cutlass-dsl[cu13]>=4.8,<4.9'
 ```
+
+## LTX 2.5 diffusion VAE: 3D neighborhood attention
+
+Load [the LTX 2.5 workflow](workflows/ltx25-neighborhood-3d.json), or submit its
+[API form](workflows/ltx25-neighborhood-3d-api.json). It adapts the first stage of
+Comfy-Org's [LTX 2.5 text-to-video template](https://github.com/Comfy-Org/workflow_templates/blob/e7cd011d4ded3411c2f481200544f0be6fdc962e/templates/video_ltx2_5_t2v.json):
+384×256, 33 frames at 24 fps, eight distilled steps, seed 1729. It saves a video
+and the generated video latent so decoder comparisons can reuse identical input.
+This is a small integration example, not the template's full two-stage quality preset.
+
+Download these files from [Lightricks/LTX-2.5](https://huggingface.co/Lightricks/LTX-2.5)
+after obtaining access, preserving the listed directories under ComfyUI `models`:
+
+- `diffusion_models/ltx-2.5-22b-distilled-transformer-comfy-int8-convrot.safetensors`
+- `text_encoders/gemma4-12b-with-proj-ltx-2.5-comfy-int8-convrot.safetensors`
+- `vae/ltx-2.5-video-vae-bf16.safetensors`
+- `vae/ltx-2.5-audio-vae-bf16.safetensors`
+
+Use current ComfyUI with `comfy_kitchen.na3d` support (tested revision is in the
+validation report). This node targets `NeighborhoodAttention3D` in
+`comfy/ldm/lightricks/vae/na_diffusion_decoder.py`. That decoder retains an LTX 2.4
+architecture name in the source but also loads the LTX 2.5 diffusion VAE weights.
+The convolutional video VAE has no neighborhood blocks and is rejected.
+
+Connect the video latent and VAE to **CuTe 3D Neighborhood Decode (LTX VAE)** in
+place of `VAE Decode` or `VAE Decode (Tiled)`. It delegates decoding and tiling to
+ComfyUI, including nested audiovisual latent handling. `tiled=false` ignores the
+tile controls; with tiling enabled, they have ComfyUI's usual meanings.
+
+- `backend=cute` requires matching CUDA FP16/BF16 operands and head dimension 64.
+  Unsupported calls and kernel failures raise; no precision conversion occurs.
+- `backend=auto` uses ComfyUI for unsupported devices/dtypes/layouts or missing
+  CuTe runtime dependencies. Errors in an eligible CuTe call still propagate.
+- `backend=comfy` uses the original `comfy_kitchen.na3d`, for comparison.
+
+Use BF16 VAE execution (ComfyUI's `--bf16-vae` option) for the demonstrated path.
+FP32/HDR decoding can use `auto` or `comfy`; strict CuTe rejects FP32.
+The adapter consumes `[B, T, H, W, heads, 64]`, clips windows to each volume axis,
+and preserves the decoder's `scale=1.0` because Q is already scaled during RMS/RoPE.
+Only noncausal, unit-stride, unit-dilation windows are supported; no mask, dropout,
+relative bias or GQA is accepted. Projections, normalization, RoPE and residuals
+remain in ComfyUI's original forward.
+
+The replacement is scoped to this decode execution. Instance forwards restore
+after success or failure, unrelated threads use the original forward, and neither
+the kitchen module nor Torch SDPA is patched. Existing forward overrides and
+compiled decoder blocks are unsupported. The dense `MODEL` patch does not replace
+this VAE's `na3d` calls. NATTEN is not required by this node.
+
+See the [RTX 5090 validation and frame comparison](results/ltx25-na3d-2026-11-13.md).
+On that 384×256 example, output agreement is about 62 dB PSNR, but warm decoding
+is slower with CuTe (270 ms versus 166 ms). This node is an explicit alternative,
+not a demonstrated speedup over current ComfyUI on the 5090.
 
 ## PMRF neighborhood attention
 
