@@ -1,0 +1,727 @@
+{
+  "environment": {
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "python": "3.13.18",
+    "torch": "2.13.0+cu130",
+    "cuda": "13.0",
+    "driver": "610.57.04",
+    "power_limit_w": 400,
+    "memory_mib": 32607,
+    "comfy_kitchen": "0.2.40",
+    "cutlass_dsl": "4.8.1",
+    "tvm_ffi": "0.1.15.post0",
+    "triton": "3.7.1"
+  },
+  "source": {
+    "kohakufa_cute": "cf97ce0e204f0ba970b04dcd5af5ad7d5c6e560d",
+    "comfyui": "35060f0156181ae78a86b10f098f67ce8e83697f",
+    "workflow_templates": "e7cd011d4ded3411c2f481200544f0be6fdc962e",
+    "models_revision": "49b093a39c19169a8a81721dcc541e07e945232f"
+  },
+  "workflow": {
+    "width": 384,
+    "height": 256,
+    "frames": 33,
+    "fps": 24,
+    "steps": 8,
+    "seed": 1729,
+    "queue_success": true,
+    "queue_seconds_including_model_preparation": 69.2259855340235
+  },
+  "weights": [
+    {
+      "rfilename": "diffusion_models/ltx-2.5-22b-distilled-transformer-comfy-int8-convrot.safetensors",
+      "size": 21504034224,
+      "lfs": {
+        "sha256": "c4279eeff115cbeaca494bd2183e7d768c38fe85a184dc6afbb7159157c44334",
+        "size": 21504034224,
+        "pointerSize": 136
+      }
+    },
+    {
+      "rfilename": "text_encoders/gemma4-12b-with-proj-ltx-2.5-comfy-int8-convrot.safetensors",
+      "size": 15372969374,
+      "lfs": {
+        "sha256": "6ce688a0aa98a5fa36a9f1e6c3f42152a498cc2b53ee8c15674c64244f91487f",
+        "size": 15372969374,
+        "pointerSize": 136
+      }
+    },
+    {
+      "rfilename": "vae/ltx-2.5-audio-vae-bf16.safetensors",
+      "size": 364866540,
+      "lfs": {
+        "sha256": "c52733d37f6a7fb7949c3dc0fb468c6cb2169e4d836983a73babb9f0d54837a5",
+        "size": 364866540,
+        "pointerSize": 134
+      }
+    },
+    {
+      "rfilename": "vae/ltx-2.5-video-vae-bf16.safetensors",
+      "size": 1472223346,
+      "lfs": {
+        "sha256": "847e14ca7f3355debca0cea4eaa24ac0fbcdf0061da054ac89ca638a869ddba3",
+        "size": 1472223346,
+        "pointerSize": 135
+      }
+    }
+  ],
+  "validation": {
+    "cpu_tests": 71,
+    "privacy_tests_included": 26,
+    "operator_3d_cases": [
+      {
+        "dtype": "torch.float16",
+        "shape": [
+          1,
+          3,
+          7,
+          5,
+          2,
+          64
+        ],
+        "kernel": [
+          3,
+          5,
+          5
+        ],
+        "scale": 1.0,
+        "worst_head_relative_l2_O_dQ_dK_dV": [
+          0.00020847694434653904,
+          0.00026244708124567156,
+          0.0003128911081565512,
+          0.0002683292300787217
+        ]
+      },
+      {
+        "dtype": "torch.float16",
+        "shape": [
+          1,
+          1,
+          6,
+          4,
+          2,
+          64
+        ],
+        "kernel": [
+          11,
+          11,
+          11
+        ],
+        "scale": 1.0,
+        "worst_head_relative_l2_O_dQ_dK_dV": [
+          0.0002048752319637614,
+          0.00025669685813056926,
+          0.00029951500117793344,
+          0.000258051633842499
+        ]
+      },
+      {
+        "dtype": "torch.float16",
+        "shape": [
+          1,
+          4,
+          5,
+          3,
+          2,
+          64
+        ],
+        "kernel": [
+          2,
+          2,
+          4
+        ],
+        "scale": -0.25,
+        "worst_head_relative_l2_O_dQ_dK_dV": [
+          0.0002103652856719134,
+          0.0002740685774540527,
+          0.0002847814910065514,
+          0.00029387750784598467
+        ]
+      },
+      {
+        "dtype": "torch.float16",
+        "shape": [
+          1,
+          2,
+          4,
+          3,
+          2,
+          64
+        ],
+        "kernel": [
+          3,
+          7,
+          7
+        ],
+        "scale": 0.0,
+        "worst_head_relative_l2_O_dQ_dK_dV": [
+          0.0002756673791549833,
+          0.0,
+          0.0,
+          0.0003638830612501244
+        ]
+      },
+      {
+        "dtype": "torch.bfloat16",
+        "shape": [
+          1,
+          3,
+          7,
+          5,
+          2,
+          64
+        ],
+        "kernel": [
+          3,
+          5,
+          5
+        ],
+        "scale": 1.0,
+        "worst_head_relative_l2_O_dQ_dK_dV": [
+          0.0015695493632055357,
+          0.0021730615061271758,
+          0.0024902101777134495,
+          0.00215385367340943
+        ]
+      },
+      {
+        "dtype": "torch.bfloat16",
+        "shape": [
+          1,
+          1,
+          6,
+          4,
+          2,
+          64
+        ],
+        "kernel": [
+          11,
+          11,
+          11
+        ],
+        "scale": 1.0,
+        "worst_head_relative_l2_O_dQ_dK_dV": [
+          0.0015025647391152615,
+          0.001949321016130385,
+          0.002305319900108677,
+          0.0019719999797183857
+        ]
+      },
+      {
+        "dtype": "torch.bfloat16",
+        "shape": [
+          1,
+          4,
+          5,
+          3,
+          2,
+          64
+        ],
+        "kernel": [
+          2,
+          2,
+          4
+        ],
+        "scale": -0.25,
+        "worst_head_relative_l2_O_dQ_dK_dV": [
+          0.0016614883249039647,
+          0.0022665189660499878,
+          0.0025391484112730007,
+          0.0023023950508526602
+        ]
+      },
+      {
+        "dtype": "torch.bfloat16",
+        "shape": [
+          1,
+          2,
+          4,
+          3,
+          2,
+          64
+        ],
+        "kernel": [
+          3,
+          7,
+          7
+        ],
+        "scale": 0.0,
+        "worst_head_relative_l2_O_dQ_dK_dV": [
+          0.001870296734606699,
+          0.0,
+          0.0,
+          0.0026964627147875327
+        ]
+      }
+    ],
+    "dense_gpu_tests": {
+      "run": 9,
+      "passed": 5,
+      "skipped": 4
+    },
+    "operator_2d_tests_passed": 3,
+    "kitchen_comparison_and_fp32_fallback_passed": true
+  },
+  "decode": {
+    "latent_shape": [
+      1,
+      128,
+      5,
+      8,
+      12
+    ],
+    "neighborhood_blocks": 24,
+    "timing_boundary": "complete decode node; synchronized wall time, resident weights after first call",
+    "gate": {
+      "max_mae": 0.00784313725490196,
+      "min_psnr_db": 35
+    },
+    "comparisons": [
+      {
+        "tiled": false,
+        "mae": 0.0004949349677190185,
+        "psnr_db": 61.98747547869984,
+        "max_absolute_error": 0.0068359375
+      },
+      {
+        "tiled": true,
+        "mae": 0.000495117565151304,
+        "psnr_db": 62.15894065287151,
+        "max_absolute_error": 0.006103515625
+      }
+    ],
+    "runs": [
+      {
+        "backend": "comfy",
+        "tiled": false,
+        "phase": "first_call",
+        "seconds": 0.4707315689884126,
+        "cute_calls": 0,
+        "comfy_calls": 24,
+        "peak_allocated_bytes": 2557528576,
+        "output_shape": [
+          33,
+          256,
+          384,
+          3
+        ]
+      },
+      {
+        "backend": "cute",
+        "tiled": false,
+        "phase": "first_call",
+        "seconds": 7.447278243023902,
+        "cute_calls": 24,
+        "comfy_calls": 0,
+        "peak_allocated_bytes": 2557528576,
+        "output_shape": [
+          33,
+          256,
+          384,
+          3
+        ]
+      },
+      {
+        "backend": "cute",
+        "tiled": false,
+        "phase": "warm",
+        "seconds": 0.2696934369741939,
+        "cute_calls": 24,
+        "comfy_calls": 0,
+        "peak_allocated_bytes": 2557528576,
+        "output_shape": [
+          33,
+          256,
+          384,
+          3
+        ]
+      },
+      {
+        "backend": "comfy",
+        "tiled": false,
+        "phase": "warm",
+        "seconds": 0.16454532695934176,
+        "cute_calls": 0,
+        "comfy_calls": 24,
+        "peak_allocated_bytes": 2557528576,
+        "output_shape": [
+          33,
+          256,
+          384,
+          3
+        ]
+      },
+      {
+        "backend": "comfy",
+        "tiled": false,
+        "phase": "warm",
+        "seconds": 0.16636629099957645,
+        "cute_calls": 0,
+        "comfy_calls": 24,
+        "peak_allocated_bytes": 2557528576,
+        "output_shape": [
+          33,
+          256,
+          384,
+          3
+        ]
+      },
+      {
+        "backend": "cute",
+        "tiled": false,
+        "phase": "warm",
+        "seconds": 0.2703349479706958,
+        "cute_calls": 24,
+        "comfy_calls": 0,
+        "peak_allocated_bytes": 2557528576,
+        "output_shape": [
+          33,
+          256,
+          384,
+          3
+        ]
+      },
+      {
+        "backend": "cute",
+        "tiled": false,
+        "phase": "warm",
+        "seconds": 0.2731421159696765,
+        "cute_calls": 24,
+        "comfy_calls": 0,
+        "peak_allocated_bytes": 2557528576,
+        "output_shape": [
+          33,
+          256,
+          384,
+          3
+        ]
+      },
+      {
+        "backend": "comfy",
+        "tiled": false,
+        "phase": "warm",
+        "seconds": 0.16601402399828658,
+        "cute_calls": 0,
+        "comfy_calls": 24,
+        "peak_allocated_bytes": 2557528576,
+        "output_shape": [
+          33,
+          256,
+          384,
+          3
+        ]
+      },
+      {
+        "backend": "comfy",
+        "tiled": true,
+        "phase": "first_call",
+        "seconds": 0.23902288498356938,
+        "cute_calls": 0,
+        "comfy_calls": 96,
+        "peak_allocated_bytes": 2067479040,
+        "output_shape": [
+          33,
+          256,
+          384,
+          3
+        ]
+      },
+      {
+        "backend": "cute",
+        "tiled": true,
+        "phase": "first_call",
+        "seconds": 6.524498686019797,
+        "cute_calls": 96,
+        "comfy_calls": 0,
+        "peak_allocated_bytes": 2067479040,
+        "output_shape": [
+          33,
+          256,
+          384,
+          3
+        ]
+      }
+    ],
+    "shapes": {
+      "False": [
+        [
+          [
+            1,
+            7,
+            8,
+            12,
+            32,
+            64
+          ],
+          "torch.bfloat16",
+          [
+            3,
+            7,
+            7
+          ],
+          1.0
+        ],
+        [
+          [
+            1,
+            7,
+            16,
+            24,
+            16,
+            64
+          ],
+          "torch.bfloat16",
+          [
+            3,
+            7,
+            7
+          ],
+          1.0
+        ],
+        [
+          [
+            1,
+            13,
+            16,
+            24,
+            8,
+            64
+          ],
+          "torch.bfloat16",
+          [
+            3,
+            5,
+            5
+          ],
+          1.0
+        ],
+        [
+          [
+            1,
+            25,
+            32,
+            48,
+            8,
+            64
+          ],
+          "torch.bfloat16",
+          [
+            3,
+            5,
+            5
+          ],
+          1.0
+        ],
+        [
+          [
+            1,
+            33,
+            64,
+            96,
+            4,
+            64
+          ],
+          "torch.bfloat16",
+          [
+            11,
+            11,
+            11
+          ],
+          1.0
+        ]
+      ],
+      "True": [
+        [
+          [
+            1,
+            5,
+            8,
+            6,
+            32,
+            64
+          ],
+          "torch.bfloat16",
+          [
+            3,
+            7,
+            7
+          ],
+          1.0
+        ],
+        [
+          [
+            1,
+            5,
+            8,
+            8,
+            32,
+            64
+          ],
+          "torch.bfloat16",
+          [
+            3,
+            7,
+            7
+          ],
+          1.0
+        ],
+        [
+          [
+            1,
+            5,
+            16,
+            12,
+            16,
+            64
+          ],
+          "torch.bfloat16",
+          [
+            3,
+            7,
+            7
+          ],
+          1.0
+        ],
+        [
+          [
+            1,
+            5,
+            16,
+            16,
+            16,
+            64
+          ],
+          "torch.bfloat16",
+          [
+            3,
+            7,
+            7
+          ],
+          1.0
+        ],
+        [
+          [
+            1,
+            9,
+            16,
+            12,
+            8,
+            64
+          ],
+          "torch.bfloat16",
+          [
+            3,
+            5,
+            5
+          ],
+          1.0
+        ],
+        [
+          [
+            1,
+            9,
+            16,
+            16,
+            8,
+            64
+          ],
+          "torch.bfloat16",
+          [
+            3,
+            5,
+            5
+          ],
+          1.0
+        ],
+        [
+          [
+            1,
+            17,
+            32,
+            24,
+            8,
+            64
+          ],
+          "torch.bfloat16",
+          [
+            3,
+            5,
+            5
+          ],
+          1.0
+        ],
+        [
+          [
+            1,
+            17,
+            32,
+            32,
+            8,
+            64
+          ],
+          "torch.bfloat16",
+          [
+            3,
+            5,
+            5
+          ],
+          1.0
+        ],
+        [
+          [
+            1,
+            17,
+            64,
+            48,
+            4,
+            64
+          ],
+          "torch.bfloat16",
+          [
+            11,
+            11,
+            11
+          ],
+          1.0
+        ],
+        [
+          [
+            1,
+            17,
+            64,
+            64,
+            4,
+            64
+          ],
+          "torch.bfloat16",
+          [
+            11,
+            11,
+            11
+          ],
+          1.0
+        ]
+      ]
+    },
+    "warm_median_seconds": {
+      "comfy": 0.16601402399828658,
+      "cute": 0.2703349479706958
+    },
+    "baseline": "comfy_kitchen CUDA na3d_kernel; no NATTEN or Python tiled-SDPA substitute",
+    "warmup": "One first decode per backend excluded; CUDA synchronized wall time; three alternating warm runs. On-disk kernel cache populated by earlier checks.",
+    "scope": "One small BF16 video. Tiled correctness checked once per backend, not a steady-state tiled benchmark. No end-to-end speedup claim."
+  },
+  "artifacts": {
+    "ltx25-na3d-frames.png": {
+      "sha256": "ff7e349e4f67eee8c3a658649b61533e2285c1cb16bb9b1c73dc7749126f0ac2",
+      "bytes": 779039
+    }
+  },
+  "tested_source_sha256": {
+    "cute_attention/ltx_node.py": "5cd77040bcbfd7e5fc9f6f2c0795b6a44993a73295a70f421fff3a88e3341417",
+    "tests/ltx_decode_smoke.py": "cf5cbc37968e1077654daedf5d0e18ef2a9e04bfc1c30cda9f18386093f3f8bf",
+    "tests/gpu_neighborhood_3d.py": "2fd0f204274083d2396aba7ce15625f45af6e645be2790d91cdeabd0e6fd9e8c",
+    "workflows/ltx25-neighborhood-3d-api.json": "00c3e55e45afa777ec6881e1a9bae96a6653f27d60c6e13a7dda3e6f4fd7459a"
+  }
+}

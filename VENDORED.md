@@ -2,9 +2,18 @@
 
 Source: <https://github.com/SimpleTuner-io/KohakuFA-CuTe>
 
-Revision: `c6f72ca8d9c9e9cb053cce3722e5f6f2f7aa0704` (0.4.0)
+Revision: `cf97ce0e204f0ba970b04dcd5af5ad7d5c6e560d` (0.4.0)
 
-The 2026-11-13 refresh imports all 60 tracked package files, including explicit
+The subsequent 2026-11-13 refresh includes all 62 tracked package files and adds
+upstream's 3D neighborhood geometry,
+two-term probability product, volume forward owner and LTX-layout adapter
+`neighborhood_attention_3d`. The dedicated LTX VAE decode node calls this adapter
+with the original pre-scaled Q and `scale=1.0`. No upstream kernel arithmetic or
+automatic owner selection is changed locally. The compact volume owner remains
+restricted by upstream to its qualified H100 family; RTX 5090 uses the generic
+3D owner. Existing namespace, import and native-launcher adaptations are retained.
+
+The preceding 2026-11-13 refresh imported all 60 tracked package files, including explicit
 2D `neighborhood_attention`, geometry, scheduling, custom operators, and the
 normalized dQ/reconstructed dK correction defaults. The new PMRF node adapts
 NATTEN's `[B, height, width, heads, D]` layout to the public neighborhood API.
