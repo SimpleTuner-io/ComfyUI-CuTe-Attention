@@ -393,7 +393,7 @@ class Attention:
         self.kernel(
             q, k, v, mask, out, maximum, logsum, dout, delta, dq, dk, dv, blocks, delta_base, scale, mma, tma_args
         ).launch(
-            grid=launch_grid(cute.ceil_div(length, self.grid_rows), q.shape[0] * heads, widths),
+            grid=launch_grid(cute.ceil_div(self.owner_length(length), self.grid_rows), q.shape[0] * heads, widths),
             block=(32 * self.warps, 1, 1),
             stream=stream,
         )
@@ -448,7 +448,13 @@ class Attention:
         return stages[None, None, slot], other_stages[None, None, slot]
 
     @cute.jit
-    def load_pair(self, source_a, source_b, right, other_right, batch, head, start, tid, tma_args, barrier, phase):
+    def load_forward(self, source, shared, batch, head, start, tid, query_start):
+        self.load(source, shared, batch, head, start, tid)
+
+    @cute.jit
+    def load_pair(
+        self, source_a, source_b, right, other_right, batch, head, start, tid, tma_args, barrier, phase, query_start=None
+    ):
         if cutlass.const_expr(self.tma):
             tma_a, ta, tma_b, tb = tma_args
             if tid < 32:
@@ -459,8 +465,12 @@ class Attention:
             cute.arch.mbarrier_wait(barrier, phase)
             phase = phase ^ 1
         else:
-            self.load(source_a, right, batch, head, start, tid)
-            self.load(source_b, other_right, batch, head, start, tid)
+            if cutlass.const_expr(query_start is not None):
+                self.load_forward(source_a, right, batch, head, start, tid, query_start)
+                self.load_forward(source_b, other_right, batch, head, start, tid, query_start)
+            else:
+                self.load(source_a, right, batch, head, start, tid)
+                self.load(source_b, other_right, batch, head, start, tid)
             cute.arch.cp_async_commit_group()
             cute.arch.cp_async_wait_group(0)
             cute.arch.sync_threads()
@@ -1415,10 +1425,18 @@ class Attention:
         return iteration, True
 
     @cute.jit
+    def owner_length(self, length):
+        return length
+
+    @cute.jit
+    def output_row(self, row):
+        return row
+
+    @cute.jit
     def grid_coordinates(self, q, k):
         length = k.shape[2] if cutlass.const_expr(self.mode == "kv") else q.shape[2]
         heads = k.shape[1] if cutlass.const_expr(self.mode == "kv") else q.shape[1]
-        return block_indices(cute.ceil_div(length, self.grid_rows), q.shape[0] * heads)
+        return block_indices(cute.ceil_div(self.owner_length(length), self.grid_rows), q.shape[0] * heads)
 
     @cute.kernel
     def kernel(self, q, k, v, mask, out, maximum, logsum, dout, delta, dq, dk, dv, blocks, delta_base, scale, mma, tma_args):
@@ -1651,6 +1669,7 @@ class Attention:
                             tma_args,
                             barrier,
                             phase_tma,
+                            query_start=start,
                         )
                     scores = self.dot(left, right, mma, thread, tid, tcgen_state=tcgen_state, preloaded_a=register_q)
                     if cutlass.const_expr(self.forward_overlap):
@@ -1713,7 +1732,7 @@ class Attention:
                     total = normalizer_add(total, normalizer_carry[r])
                 denom = total if total > 0.0 else cutlass.Float32(1.0)
                 av[r, None] = av[r, None].load() / denom
-                row = start + rc[r, 0][0]
+                row = self.output_row(start + rc[r, 0][0])
                 publish = True
                 if cutlass.const_expr(self.forward_columns):
                     publish = tid < 32 * (self.warps // self.column_warps)

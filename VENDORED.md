@@ -2,9 +2,28 @@
 
 Source: <https://github.com/SimpleTuner-io/KohakuFA-CuTe>
 
-Revision: `c6f72ca8d9c9e9cb053cce3722e5f6f2f7aa0704` (0.4.0)
+Revision: `70d5f0bff4c6c22b044611b6c44312e6bb1a016f` (0.4.0), from the
+upstream `perf/neighborhood-comfy-kitchen` branch.
 
-The 2026-11-13 refresh imports all 60 tracked package files, including explicit
+The 2026-11-14 refresh imports direct neighborhood-union traversal and cached
+native 3D launches, including the qualified RTX 5090 path. The CUDA operator
+registration, fake implementations and autograd remain isolated under
+`comfyui_cute_attention`. The new native neighborhood compiler import uses the
+same vendored-module build definition as dense attention, and its TVM function
+names use the actual module name. No upstream arithmetic or scheduling is
+modified locally. All 62 tracked upstream package files remain included.
+See the [RTX 5090 refresh validation](results/ltx25-na3d-2026-11-14.md)
+for the same-host old/new decoder comparison and both Kitchen versions.
+
+The preceding 2026-11-13 snapshot at `cf97ce0` added 3D neighborhood geometry,
+two-term probability product, volume forward owner and LTX-layout adapter
+`neighborhood_attention_3d`. The dedicated LTX VAE decode node calls this adapter
+with the original pre-scaled Q and `scale=1.0`. No upstream kernel arithmetic or
+automatic owner selection was changed locally. That snapshot restricted the
+compact volume owner to H100; RTX 5090 used the generic 3D owner. Existing
+namespace, import and native-launcher adaptations were retained.
+
+The preceding 2026-11-13 refresh imported all 60 tracked package files, including explicit
 2D `neighborhood_attention`, geometry, scheduling, custom operators, and the
 normalized dQ/reconstructed dK correction defaults. The new PMRF node adapts
 NATTEN's `[B, height, width, heads, D]` layout to the public neighborhood API.

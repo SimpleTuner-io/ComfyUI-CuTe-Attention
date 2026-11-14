@@ -1,0 +1,3206 @@
+{
+  "date": "2026-11-14",
+  "upstream_revision": "70d5f0bff4c6c22b044611b6c44312e6bb1a016f",
+  "previous_upstream_revision": "cf97ce0e204f0ba970b04dcd5af5ad7d5c6e560d",
+  "comfyui_revision": "35060f0156181ae78a86b10f098f67ce8e83697f",
+  "model_revision": "49b093a39c19169a8a81721dcc541e07e945232f",
+  "model": {
+    "filename": "vae/ltx-2.5-video-vae-bf16.safetensors",
+    "sha256": "847e14ca7f3355debca0cea4eaa24ac0fbcdf0061da054ac89ca638a869ddba3"
+  },
+  "input_latent_sha256": "b8b54cce6d9d80a0c82ed0e51ccf0919a3d165fa9122bebaa188c25d3154f851",
+  "environment": {
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "sm": "12.0",
+    "multiprocessors": 170,
+    "memory_mib": 32607,
+    "power_limit_watts": 575,
+    "driver": "610.57.04",
+    "python": "3.13.18",
+    "torch": "2.13.0+cu130",
+    "cuda": "13.0",
+    "triton": "3.7.1",
+    "cutlass_dsl": "4.8.1",
+    "tvm_ffi": "0.1.15.post0"
+  },
+  "validation": {
+    "cpu_passed": 71,
+    "privacy_tests_included": 26,
+    "na3d_gpu_passed": 4,
+    "dense_gpu_passed": 5,
+    "dense_gpu_skipped": 4,
+    "neighborhood_2d_gpu_passed": 3,
+    "queue_decoder_replay": "passed",
+    "queue_seconds": 50.49031200201716,
+    "full_diffusion_rerun": false
+  },
+  "decode": {
+    "new-kitchen040": {
+      "gpu": "NVIDIA GeForce RTX 5090",
+      "python": "3.13.18",
+      "torch": "2.13.0+cu130",
+      "cuda": "13.0",
+      "comfy_kitchen": "0.2.40",
+      "warm_repeats": 7,
+      "latent_shape": [
+        1,
+        128,
+        5,
+        8,
+        12
+      ],
+      "neighborhood_blocks": 24,
+      "timing_boundary": "complete decode node; synchronized wall time, resident weights after first call",
+      "gate": {
+        "max_mae": 0.00784313725490196,
+        "min_psnr_db": 35
+      },
+      "runs": [
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "first_call",
+          "seconds": 1.008495302987285,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "first_call",
+          "seconds": 75.50843467505183,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.13063460192643106,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.17440932895988226,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.17269907891750336,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.12665733299218118,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.12741286004893482,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.16988300997763872,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.1699771590065211,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.12691481900401413,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.1267685720231384,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.17060528707224876,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.17110566806513816,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.1277118850266561,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.1268401100533083,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.1701559660723433,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": true,
+          "phase": "first_call",
+          "seconds": 0.3141089689452201,
+          "cute_calls": 0,
+          "comfy_calls": 96,
+          "peak_allocated_bytes": 2067480064,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": true,
+          "phase": "first_call",
+          "seconds": 20.818245203001425,
+          "cute_calls": 96,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2067480064,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        }
+      ],
+      "comparisons": [
+        {
+          "tiled": false,
+          "mae": 0.000495477463118732,
+          "psnr_db": 61.981738860595456,
+          "max_absolute_error": 0.0068359375
+        },
+        {
+          "tiled": true,
+          "mae": 0.0004961971426382661,
+          "psnr_db": 62.13129349765573,
+          "max_absolute_error": 0.0078125
+        }
+      ],
+      "observed_attention_shapes": {
+        "regular": [
+          [
+            [
+              1,
+              7,
+              8,
+              12,
+              32,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              7,
+              16,
+              24,
+              16,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              13,
+              16,
+              24,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              25,
+              32,
+              48,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              33,
+              64,
+              96,
+              4,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              11,
+              11,
+              11
+            ],
+            1.0
+          ]
+        ],
+        "tiled": [
+          [
+            [
+              1,
+              5,
+              8,
+              6,
+              32,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              5,
+              8,
+              8,
+              32,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              5,
+              16,
+              12,
+              16,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              5,
+              16,
+              16,
+              16,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              9,
+              16,
+              12,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              9,
+              16,
+              16,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              17,
+              32,
+              24,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              17,
+              32,
+              32,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              17,
+              64,
+              48,
+              4,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              11,
+              11,
+              11
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              17,
+              64,
+              64,
+              4,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              11,
+              11,
+              11
+            ],
+            1.0
+          ]
+        ]
+      },
+      "warm_median_ms": {
+        "cute": 126.91481900401413,
+        "comfy": 170.60528707224876
+      }
+    },
+    "old-kitchen040": {
+      "gpu": "NVIDIA GeForce RTX 5090",
+      "python": "3.13.18",
+      "torch": "2.13.0+cu130",
+      "cuda": "13.0",
+      "latent_shape": [
+        1,
+        128,
+        5,
+        8,
+        12
+      ],
+      "neighborhood_blocks": 24,
+      "timing_boundary": "complete decode node; synchronized wall time, resident weights after first call",
+      "gate": {
+        "max_mae": 0.00784313725490196,
+        "min_psnr_db": 35
+      },
+      "runs": [
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "first_call",
+          "seconds": 0.9373032670700923,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "first_call",
+          "seconds": 16.580180892022327,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.2559513699961826,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.16828888899181038,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.18869572400581092,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.25256630999501795,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.2509125400101766,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.1701268149772659,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.18847983703017235,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.25224229600280523,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.25077251193579286,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.186949365073815,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.18869367300067097,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.2528584849787876,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.2585692530265078,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.16883061896078289,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": true,
+          "phase": "first_call",
+          "seconds": 0.3165389950154349,
+          "cute_calls": 0,
+          "comfy_calls": 96,
+          "peak_allocated_bytes": 2067479040,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": true,
+          "phase": "first_call",
+          "seconds": 14.09254228696227,
+          "cute_calls": 96,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2067479040,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        }
+      ],
+      "comparisons": [
+        {
+          "tiled": false,
+          "mae": 0.0004949349677190185,
+          "psnr_db": 61.98747547869984,
+          "max_absolute_error": 0.0068359375
+        },
+        {
+          "tiled": true,
+          "mae": 0.000495117565151304,
+          "psnr_db": 62.15894065287151,
+          "max_absolute_error": 0.006103515625
+        }
+      ],
+      "comfy_kitchen": "0.2.40",
+      "warm_repeats": 7,
+      "observed_attention_shapes": {
+        "regular": [
+          [
+            [
+              1,
+              7,
+              8,
+              12,
+              32,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              7,
+              16,
+              24,
+              16,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              13,
+              16,
+              24,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              25,
+              32,
+              48,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              33,
+              64,
+              96,
+              4,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              11,
+              11,
+              11
+            ],
+            1.0
+          ]
+        ],
+        "tiled": [
+          [
+            [
+              1,
+              5,
+              8,
+              6,
+              32,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              5,
+              8,
+              8,
+              32,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              5,
+              16,
+              12,
+              16,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              5,
+              16,
+              16,
+              16,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              9,
+              16,
+              12,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              9,
+              16,
+              16,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              17,
+              32,
+              24,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              17,
+              32,
+              32,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              17,
+              64,
+              48,
+              4,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              11,
+              11,
+              11
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              17,
+              64,
+              64,
+              4,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              11,
+              11,
+              11
+            ],
+            1.0
+          ]
+        ]
+      },
+      "warm_median_ms": {
+        "cute": 252.56630999501795,
+        "comfy": 186.949365073815
+      }
+    },
+    "new-kitchen041": {
+      "gpu": "NVIDIA GeForce RTX 5090",
+      "python": "3.13.18",
+      "torch": "2.13.0+cu130",
+      "cuda": "13.0",
+      "comfy_kitchen": "0.2.41",
+      "warm_repeats": 7,
+      "latent_shape": [
+        1,
+        128,
+        5,
+        8,
+        12
+      ],
+      "neighborhood_blocks": 24,
+      "timing_boundary": "complete decode node; synchronized wall time, resident weights after first call",
+      "gate": {
+        "max_mae": 0.00784313725490196,
+        "min_psnr_db": 35
+      },
+      "runs": [
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "first_call",
+          "seconds": 1.0285719790263101,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557528576,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "first_call",
+          "seconds": 44.33087978500407,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.13237549702171236,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.16816153493709862,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.16926052595954388,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.12991119106300175,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.13199413393158466,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.17232722998596728,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.17030191607773304,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.13088683306705207,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.13005190901458263,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.17376370495185256,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.1699430129956454,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.1339272690238431,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.13211620098445565,
+          "cute_calls": 24,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": false,
+          "phase": "warm",
+          "seconds": 0.17113354103639722,
+          "cute_calls": 0,
+          "comfy_calls": 24,
+          "peak_allocated_bytes": 2557529600,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "comfy",
+          "tiled": true,
+          "phase": "first_call",
+          "seconds": 0.3149334939662367,
+          "cute_calls": 0,
+          "comfy_calls": 96,
+          "peak_allocated_bytes": 2067480064,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        },
+        {
+          "backend": "cute",
+          "tiled": true,
+          "phase": "first_call",
+          "seconds": 20.80355127400253,
+          "cute_calls": 96,
+          "comfy_calls": 0,
+          "peak_allocated_bytes": 2067480064,
+          "output_shape": [
+            33,
+            256,
+            384,
+            3
+          ]
+        }
+      ],
+      "comparisons": [
+        {
+          "tiled": false,
+          "mae": 0.000495477463118732,
+          "psnr_db": 61.981738860595456,
+          "max_absolute_error": 0.0068359375
+        },
+        {
+          "tiled": true,
+          "mae": 0.0004961971426382661,
+          "psnr_db": 62.13129349765573,
+          "max_absolute_error": 0.0078125
+        }
+      ],
+      "observed_attention_shapes": {
+        "regular": [
+          [
+            [
+              1,
+              7,
+              8,
+              12,
+              32,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              7,
+              16,
+              24,
+              16,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              13,
+              16,
+              24,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              25,
+              32,
+              48,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              33,
+              64,
+              96,
+              4,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              11,
+              11,
+              11
+            ],
+            1.0
+          ]
+        ],
+        "tiled": [
+          [
+            [
+              1,
+              5,
+              8,
+              6,
+              32,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              5,
+              8,
+              8,
+              32,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              5,
+              16,
+              12,
+              16,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              5,
+              16,
+              16,
+              16,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              7,
+              7
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              9,
+              16,
+              12,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              9,
+              16,
+              16,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              17,
+              32,
+              24,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              17,
+              32,
+              32,
+              8,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              3,
+              5,
+              5
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              17,
+              64,
+              48,
+              4,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              11,
+              11,
+              11
+            ],
+            1.0
+          ],
+          [
+            [
+              1,
+              17,
+              64,
+              64,
+              4,
+              64
+            ],
+            "torch.bfloat16",
+            [
+              11,
+              11,
+              11
+            ],
+            1.0
+          ]
+        ]
+      },
+      "warm_median_ms": {
+        "cute": 131.99413393158466,
+        "comfy": 170.30191607773304
+      }
+    }
+  },
+  "operators": {
+    "operator040": {
+      "gpu": "NVIDIA GeForce RTX 5090",
+      "torch": "2.13.0+cu130",
+      "cuda": "13.0",
+      "comfy_kitchen": "0.2.40",
+      "method": "CUDA-synchronized complete eager calls; alternating samples after three warm calls; per-call synchronization included",
+      "sample_seconds": 0.2,
+      "samples": 9,
+      "scale": 1.0,
+      "reference": "32 sampled queries plus corners and plane seams, independent native FP64 on identical rounded inputs",
+      "rows": [
+        {
+          "shape": [
+            1,
+            7,
+            8,
+            12,
+            32,
+            64
+          ],
+          "window": [
+            3,
+            7,
+            7
+          ],
+          "dtype": "torch.float16",
+          "milliseconds": {
+            "cute": [
+              0.10648173493932399,
+              0.10630695481352136,
+              0.10607006888261829,
+              0.10595343220471878,
+              0.10620865655960139,
+              0.1064477647749381,
+              0.1060400371255662,
+              0.10645655664095398,
+              0.10619449572323282
+            ],
+            "comfy": [
+              0.15542331785209645,
+              0.15611548282572194,
+              0.15505572172719262,
+              0.15580653428024616,
+              0.15624219284136254,
+              0.15539150536479718,
+              0.157008242623053,
+              0.15560926834749952,
+              0.16027876606527477
+            ]
+          },
+          "median_ms": {
+            "cute": 0.10620865655960139,
+            "comfy": 0.15580653428024616
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.00021395269023073092,
+            "comfy": 0.0002717898925300804
+          }
+        },
+        {
+          "shape": [
+            1,
+            7,
+            16,
+            24,
+            16,
+            64
+          ],
+          "window": [
+            3,
+            7,
+            7
+          ],
+          "dtype": "torch.float16",
+          "milliseconds": {
+            "cute": [
+              0.11911800711892456,
+              0.11886291917517507,
+              0.11887379262908469,
+              0.11880953862296413,
+              0.11903168471526755,
+              0.11936623150502779,
+              0.11891896787180381,
+              0.11884059067494587,
+              0.11916744070401623
+            ],
+            "comfy": [
+              0.16880760594165023,
+              0.16936187468355587,
+              0.16926663538500944,
+              0.16924478259416653,
+              0.16918464245735995,
+              0.16907730684178746,
+              0.16881191900652295,
+              0.16921645860847986,
+              0.16941828367353168
+            ]
+          },
+          "median_ms": {
+            "cute": 0.11891896787180381,
+            "comfy": 0.16921645860847986
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.00021536072114557956,
+            "comfy": 0.000272740384223972
+          }
+        },
+        {
+          "shape": [
+            1,
+            13,
+            16,
+            24,
+            8,
+            64
+          ],
+          "window": [
+            3,
+            5,
+            5
+          ],
+          "dtype": "torch.float16",
+          "milliseconds": {
+            "cute": [
+              0.09931214204633307,
+              0.09928197171261752,
+              0.10003763646818697,
+              0.09953892640352471,
+              0.09933759336051824,
+              0.09945090058181902,
+              0.09917250568214314,
+              0.09908757458287354,
+              0.09968610510358139
+            ],
+            "comfy": [
+              0.1344529388319721,
+              0.13379130028125932,
+              0.13359726441760505,
+              0.13385719867317275,
+              0.1337582306633828,
+              0.1342984181266253,
+              0.14039626876055672,
+              0.134352554740413,
+              0.13375918649854188
+            ]
+          },
+          "median_ms": {
+            "cute": 0.09933759336051824,
+            "comfy": 0.13385719867317275
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.00021400648805025972,
+            "comfy": 0.00026614387721357347
+          }
+        },
+        {
+          "shape": [
+            1,
+            25,
+            32,
+            48,
+            8,
+            64
+          ],
+          "window": [
+            3,
+            5,
+            5
+          ],
+          "dtype": "torch.float16",
+          "milliseconds": {
+            "cute": [
+              0.2519697644712605,
+              0.2547125330576365,
+              0.2524216166400312,
+              0.25223269101471874,
+              0.2529468293467774,
+              0.25292024397268875,
+              0.25232002907755585,
+              0.25282401519220776,
+              0.25247617916545795
+            ],
+            "comfy": [
+              0.5784938468549379,
+              0.5826996395710943,
+              0.5832346761734944,
+              0.5828128050779924,
+              0.5826973457831542,
+              0.5827592327097041,
+              0.5856689122881282,
+              0.5841417724820555,
+              0.5833677609475553
+            ]
+          },
+          "median_ms": {
+            "cute": 0.25247617916545795,
+            "comfy": 0.5828128050779924
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.00021298760853116511,
+            "comfy": 0.000261869015874832
+          }
+        },
+        {
+          "shape": [
+            1,
+            33,
+            64,
+            96,
+            4,
+            64
+          ],
+          "window": [
+            11,
+            11,
+            11
+          ],
+          "dtype": "torch.float16",
+          "milliseconds": {
+            "cute": [
+              5.118305500946008,
+              5.209184308440831,
+              5.207772026411616,
+              5.214081641334372,
+              5.21197656276994,
+              5.220593818917107,
+              5.231312356698207,
+              5.220649999757417,
+              5.218496949125368
+            ],
+            "comfy": [
+              10.431717947358266,
+              10.457578499335796,
+              10.467185301240534,
+              10.468972299713641,
+              10.477654647547752,
+              10.486720001790673,
+              10.47588670044206,
+              10.477733646985143,
+              10.480342601658776
+            ]
+          },
+          "median_ms": {
+            "cute": 5.214081641334372,
+            "comfy": 10.47588670044206
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.00020765119416511183,
+            "comfy": 0.0002831016095505469
+          }
+        },
+        {
+          "shape": [
+            1,
+            17,
+            128,
+            128,
+            4,
+            64
+          ],
+          "window": [
+            11,
+            11,
+            11
+          ],
+          "dtype": "torch.float16",
+          "milliseconds": {
+            "cute": [
+              7.01153706678928,
+              7.12684703316411,
+              7.133083137009164,
+              7.144020462874323,
+              7.146569717276309,
+              7.144694786152935,
+              7.139143381460474,
+              7.138288933141478,
+              7.148762890470347
+            ],
+            "comfy": [
+              14.369978860486299,
+              14.372565209799047,
+              14.3898805669908,
+              14.398046852355558,
+              14.431971998419613,
+              14.401788282806852,
+              14.403263215042118,
+              14.403768216392823,
+              14.402876067574002
+            ]
+          },
+          "median_ms": {
+            "cute": 7.139143381460474,
+            "comfy": 14.401788282806852
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.00021033374864422015,
+            "comfy": 0.00028065350308845795
+          }
+        },
+        {
+          "shape": [
+            1,
+            13,
+            64,
+            65,
+            2,
+            64
+          ],
+          "window": [
+            11,
+            11,
+            11
+          ],
+          "dtype": "torch.float16",
+          "milliseconds": {
+            "cute": [
+              0.8029406042769551,
+              0.8086742501848587,
+              0.8288663802360577,
+              0.8092378707407343,
+              0.8112566681344983,
+              0.8096636696380654,
+              0.8119543885193795,
+              0.8104778991197708,
+              0.8141265815782656
+            ],
+            "comfy": [
+              1.820235817947171,
+              1.8193274725821207,
+              1.8208748999644409,
+              1.8219596092504533,
+              1.8206529901362956,
+              1.8200973641466012,
+              1.8201011000201106,
+              1.8200322731652043,
+              1.8232547635720535
+            ]
+          },
+          "median_ms": {
+            "cute": 0.8104778991197708,
+            "comfy": 1.820235817947171
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.00021064469983840807,
+            "comfy": 0.0002778264808158289
+          }
+        },
+        {
+          "shape": [
+            1,
+            7,
+            8,
+            12,
+            32,
+            64
+          ],
+          "window": [
+            3,
+            7,
+            7
+          ],
+          "dtype": "torch.bfloat16",
+          "milliseconds": {
+            "cute": [
+              0.10759925983010553,
+              0.10778860614036917,
+              0.10716758596590642,
+              0.10752870165492578,
+              0.10702916209966168,
+              0.10753535159853517,
+              0.10742936843544021,
+              0.10741476276494519,
+              0.10741950264330613
+            ],
+            "comfy": [
+              0.15536086336978544,
+              0.15549698677029758,
+              0.15594844238156585,
+              0.15586278971786555,
+              0.15581046955332137,
+              0.15551759201089657,
+              0.15541893784998806,
+              0.15592181919736386,
+              0.1556404292710925
+            ]
+          },
+          "median_ms": {
+            "cute": 0.10742936843544021,
+            "comfy": 0.1556404292710925
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.001722881986655064,
+            "comfy": 0.002216228392002943
+          }
+        },
+        {
+          "shape": [
+            1,
+            7,
+            16,
+            24,
+            16,
+            64
+          ],
+          "window": [
+            3,
+            7,
+            7
+          ],
+          "dtype": "torch.bfloat16",
+          "milliseconds": {
+            "cute": [
+              0.11995982192233383,
+              0.12023540449053353,
+              0.12004300056670104,
+              0.12011932293545692,
+              0.12006218725980884,
+              0.11994760375742396,
+              0.11999204138324031,
+              0.11998356569136019,
+              0.11988811447676283
+            ],
+            "comfy": [
+              0.16786272898503898,
+              0.16810862433572277,
+              0.16780396307749837,
+              0.1677172858625563,
+              0.16790942197912467,
+              0.16808955795170755,
+              0.1680350647011567,
+              0.1679466616817438,
+              0.1680765748063118
+            ]
+          },
+          "median_ms": {
+            "cute": 0.11999204138324031,
+            "comfy": 0.1679466616817438
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.0016946573545201004,
+            "comfy": 0.002181947602523095
+          }
+        },
+        {
+          "shape": [
+            1,
+            13,
+            16,
+            24,
+            8,
+            64
+          ],
+          "window": [
+            3,
+            5,
+            5
+          ],
+          "dtype": "torch.bfloat16",
+          "milliseconds": {
+            "cute": [
+              0.09990081121981308,
+              0.10011760409347138,
+              0.09998446429331695,
+              0.09997065671473399,
+              0.09992832815010365,
+              0.10043876661720824,
+              0.10097959311091347,
+              0.0996656871206342,
+              0.09981499198998907
+            ],
+            "comfy": [
+              0.1341455358709568,
+              0.13439744258083058,
+              0.13415579744043124,
+              0.13431837077673506,
+              0.13418806369193423,
+              0.13430444429934824,
+              0.13451907400445162,
+              0.13390305490074667,
+              0.13546405007625117
+            ]
+          },
+          "median_ms": {
+            "cute": 0.09997065671473399,
+            "comfy": 0.13430444429934824
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.0017159073152827411,
+            "comfy": 0.0020990656411102927
+          }
+        },
+        {
+          "shape": [
+            1,
+            25,
+            32,
+            48,
+            8,
+            64
+          ],
+          "window": [
+            3,
+            5,
+            5
+          ],
+          "dtype": "torch.bfloat16",
+          "milliseconds": {
+            "cute": [
+              0.24991367170970874,
+              0.25073673318193895,
+              0.2506170838544418,
+              0.250599987412079,
+              0.25022421366884373,
+              0.2501314775145147,
+              0.25002961745485663,
+              0.2502396499039605,
+              0.24994271028363674
+            ],
+            "comfy": [
+              0.5777821210494818,
+              0.5786590462528988,
+              0.5814478895762328,
+              0.5831028981020256,
+              0.5830654476466047,
+              0.5833941458184109,
+              0.5830091107528397,
+              0.5831148512064107,
+              0.5833820467706194
+            ]
+          },
+          "median_ms": {
+            "cute": 0.25022421366884373,
+            "comfy": 0.5830654476466047
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.0016931298714009837,
+            "comfy": 0.0021013319420830033
+          }
+        },
+        {
+          "shape": [
+            1,
+            33,
+            64,
+            96,
+            4,
+            64
+          ],
+          "window": [
+            11,
+            11,
+            11
+          ],
+          "dtype": "torch.bfloat16",
+          "milliseconds": {
+            "cute": [
+              5.078395700547844,
+              5.187387255808482,
+              5.172271102380294,
+              5.18130966856216,
+              5.183478614363151,
+              5.188582103866606,
+              5.182355537843437,
+              5.186808050777286,
+              5.1857652291894345
+            ],
+            "comfy": [
+              10.384010802954435,
+              10.400748549727723,
+              10.414661798859015,
+              10.411596798803657,
+              10.442690801573917,
+              10.440644802292809,
+              10.442201752448454,
+              10.440958349499851,
+              10.440960800042376
+            ]
+          },
+          "median_ms": {
+            "cute": 5.183478614363151,
+            "comfy": 10.440644802292809
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.001652953808049833,
+            "comfy": 0.0022806947624137877
+          }
+        },
+        {
+          "shape": [
+            1,
+            17,
+            128,
+            128,
+            4,
+            64
+          ],
+          "window": [
+            11,
+            11,
+            11
+          ],
+          "dtype": "torch.bfloat16",
+          "milliseconds": {
+            "cute": [
+              6.943691722599083,
+              7.078085520208396,
+              7.0818319980954305,
+              7.079387240208171,
+              7.082518555448744,
+              7.083916791778957,
+              7.083979206448742,
+              7.090140828573755,
+              7.094560724940022
+            ],
+            "comfy": [
+              14.26514220268776,
+              14.280651936617991,
+              14.325381713985864,
+              14.332122285850346,
+              14.333601575344801,
+              14.339357148855925,
+              14.341022860857525,
+              14.34468278395278,
+              14.349997717155409
+            ]
+          },
+          "median_ms": {
+            "cute": 7.082518555448744,
+            "comfy": 14.333601575344801
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.00170688844302742,
+            "comfy": 0.002282938584982601
+          }
+        },
+        {
+          "shape": [
+            1,
+            13,
+            64,
+            65,
+            2,
+            64
+          ],
+          "window": [
+            11,
+            11,
+            11
+          ],
+          "dtype": "torch.bfloat16",
+          "milliseconds": {
+            "cute": [
+              0.7957122417994671,
+              0.8156254553478363,
+              0.8009075201116502,
+              0.8012831159867346,
+              0.8022501799277961,
+              0.8021893361583352,
+              0.8026504484005272,
+              0.8021211000159383,
+              0.8022357360459864
+            ],
+            "comfy": [
+              1.8153337568783008,
+              1.8166273419099215,
+              1.8213549819351598,
+              1.823265763761645,
+              1.8227209633385593,
+              1.8227397728796033,
+              1.821979881391268,
+              1.8225515007295392,
+              1.8223157808692618
+            ]
+          },
+          "median_ms": {
+            "cute": 0.8021893361583352,
+            "comfy": 1.8223157808692618
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.001663865460775061,
+            "comfy": 0.0022455710113449124
+          }
+        }
+      ]
+    },
+    "operator041": {
+      "gpu": "NVIDIA GeForce RTX 5090",
+      "torch": "2.13.0+cu130",
+      "cuda": "13.0",
+      "comfy_kitchen": "0.2.41",
+      "method": "CUDA-synchronized complete eager calls; alternating samples after three warm calls; per-call synchronization included",
+      "sample_seconds": 0.2,
+      "samples": 9,
+      "scale": 1.0,
+      "reference": "32 sampled queries plus corners and plane seams, independent native FP64 on identical rounded inputs",
+      "rows": [
+        {
+          "shape": [
+            1,
+            7,
+            8,
+            12,
+            32,
+            64
+          ],
+          "window": [
+            3,
+            7,
+            7
+          ],
+          "dtype": "torch.float16",
+          "milliseconds": {
+            "cute": [
+              0.10677435060887495,
+              0.10542234614907564,
+              0.10570368836045942,
+              0.10567271155322426,
+              0.10565784679872377,
+              0.10582564759595448,
+              0.10594850792293042,
+              0.10668491410712401,
+              0.10566874482259114
+            ],
+            "comfy": [
+              0.1388364420598793,
+              0.13871250624720644,
+              0.13861229658715443,
+              0.14026098454248312,
+              0.13905303821982487,
+              0.14680258474317506,
+              0.13921984201446228,
+              0.13921414268648324,
+              0.13932420124369868
+            ]
+          },
+          "median_ms": {
+            "cute": 0.10570368836045942,
+            "comfy": 0.13921414268648324
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.00021395269023073092,
+            "comfy": 0.0002717898925300804
+          }
+        },
+        {
+          "shape": [
+            1,
+            7,
+            16,
+            24,
+            16,
+            64
+          ],
+          "window": [
+            3,
+            7,
+            7
+          ],
+          "dtype": "torch.float16",
+          "milliseconds": {
+            "cute": [
+              0.11827915081878797,
+              0.11873413229676223,
+              0.11903948426481552,
+              0.11863066666524234,
+              0.11872506413045021,
+              0.11850651839121258,
+              0.1188307850413697,
+              0.11881181231651217,
+              0.11857721045619914
+            ],
+            "comfy": [
+              0.16675987668956319,
+              0.16675185247246796,
+              0.1663812891954087,
+              0.16653176853053278,
+              0.16662503087072697,
+              0.16681867724655816,
+              0.16677034330011034,
+              0.16682450713945537,
+              0.16709576769745166
+            ]
+          },
+          "median_ms": {
+            "cute": 0.11872506413045021,
+            "comfy": 0.16675987668956319
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.00021536072114557956,
+            "comfy": 0.000272740384223972
+          }
+        },
+        {
+          "shape": [
+            1,
+            13,
+            16,
+            24,
+            8,
+            64
+          ],
+          "window": [
+            3,
+            5,
+            5
+          ],
+          "dtype": "torch.float16",
+          "milliseconds": {
+            "cute": [
+              0.10041898793454869,
+              0.10057964503611524,
+              0.09933461419185541,
+              0.1000921276182294,
+              0.09967970255090412,
+              0.09968361931453461,
+              0.09984256638801413,
+              0.09971288783087628,
+              0.0992003634011481
+            ],
+            "comfy": [
+              0.12966305438769535,
+              0.13147552095967957,
+              0.12989826167800597,
+              0.1299817368776681,
+              0.1296752573239025,
+              0.13018892837110266,
+              0.12975184365577908,
+              0.129779171208874,
+              0.13016197985255087
+            ]
+          },
+          "median_ms": {
+            "cute": 0.09971288783087628,
+            "comfy": 0.12989826167800597
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.00021400648805025972,
+            "comfy": 0.00026614387721357347
+          }
+        },
+        {
+          "shape": [
+            1,
+            25,
+            32,
+            48,
+            8,
+            64
+          ],
+          "window": [
+            3,
+            5,
+            5
+          ],
+          "dtype": "torch.float16",
+          "milliseconds": {
+            "cute": [
+              0.2520842958882132,
+              0.2516458654459917,
+              0.25218748106323274,
+              0.2522554526323967,
+              0.25236832543451243,
+              0.2517645433252244,
+              0.2523582749606626,
+              0.25259802277279886,
+              0.252530989889761
+            ],
+            "comfy": [
+              0.5408177079909758,
+              0.5428821383533762,
+              0.545954817401027,
+              0.5434626422514558,
+              0.5443463261421446,
+              0.5456775995301291,
+              0.5463311608566088,
+              0.5449857876816262,
+              0.5449805014109498
+            ]
+          },
+          "median_ms": {
+            "cute": 0.2522554526323967,
+            "comfy": 0.5449805014109498
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.00021298760853116511,
+            "comfy": 0.000261869015874832
+          }
+        },
+        {
+          "shape": [
+            1,
+            33,
+            64,
+            96,
+            4,
+            64
+          ],
+          "window": [
+            11,
+            11,
+            11
+          ],
+          "dtype": "torch.float16",
+          "milliseconds": {
+            "cute": [
+              5.123022649786435,
+              5.213212693492189,
+              5.216850308128274,
+              5.220611000624605,
+              5.220668462033455,
+              5.220956410854482,
+              5.222633051184507,
+              5.406467133906443,
+              5.185592665862387
+            ],
+            "comfy": [
+              9.835749853491073,
+              9.851549524769542,
+              9.865546477071586,
+              9.866042666891147,
+              9.87049923389263,
+              9.868554471592818,
+              9.874305854152356,
+              9.87268966578302,
+              9.86636595223986
+            ]
+          },
+          "median_ms": {
+            "cute": 5.220611000624605,
+            "comfy": 9.86636595223986
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.00020765119416511183,
+            "comfy": 0.0002831016095505469
+          }
+        },
+        {
+          "shape": [
+            1,
+            17,
+            128,
+            128,
+            4,
+            64
+          ],
+          "window": [
+            11,
+            11,
+            11
+          ],
+          "dtype": "torch.float16",
+          "milliseconds": {
+            "cute": [
+              7.005330584622149,
+              7.123896069342977,
+              7.134823449726762,
+              7.133973485404818,
+              7.14049027461944,
+              7.147625787183642,
+              7.151408216616671,
+              7.145781178093914,
+              7.155111716461501
+            ],
+            "comfy": [
+              13.592243668002387,
+              13.604060063759485,
+              13.620097795501351,
+              13.619599801798662,
+              13.625264330767095,
+              13.625792406188944,
+              13.641712736959258,
+              13.628224997470776,
+              13.63881747238338
+            ]
+          },
+          "median_ms": {
+            "cute": 7.14049027461944,
+            "comfy": 13.625264330767095
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.00021033374864422015,
+            "comfy": 0.00028065350308845795
+          }
+        },
+        {
+          "shape": [
+            1,
+            13,
+            64,
+            65,
+            2,
+            64
+          ],
+          "window": [
+            11,
+            11,
+            11
+          ],
+          "dtype": "torch.float16",
+          "milliseconds": {
+            "cute": [
+              0.8035450285472664,
+              0.8084206248543435,
+              0.8109847327830036,
+              0.8090621493231025,
+              0.8121038987848018,
+              0.8094725443140394,
+              0.8122472593048022,
+              0.8104036883583013,
+              0.8131510325389483
+            ],
+            "comfy": [
+              1.6362640819307872,
+              1.6363414716187532,
+              1.6367493492619294,
+              1.6448434593049106,
+              1.637366495276915,
+              1.6367424476316306,
+              1.6370126835593,
+              1.6366878867043348,
+              1.6396749424977137
+            ]
+          },
+          "median_ms": {
+            "cute": 0.8104036883583013,
+            "comfy": 1.6367493492619294
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.00021064469983840807,
+            "comfy": 0.0002778264808158289
+          }
+        },
+        {
+          "shape": [
+            1,
+            7,
+            8,
+            12,
+            32,
+            64
+          ],
+          "window": [
+            3,
+            7,
+            7
+          ],
+          "dtype": "torch.bfloat16",
+          "milliseconds": {
+            "cute": [
+              0.10822735606134341,
+              0.10712433527321039,
+              0.10732148231612719,
+              0.1102246904037585,
+              0.10739587336354721,
+              0.10729136891742974,
+              0.10842994741368585,
+              0.10750189306958109,
+              0.10740078530277831
+            ],
+            "comfy": [
+              0.1419608545178287,
+              0.14038859163982825,
+              0.14002376693536178,
+              0.140131346676603,
+              0.13930464063221096,
+              0.14007435086005854,
+              0.13959806908665529,
+              0.13954636815875623,
+              0.13936712469161075
+            ]
+          },
+          "median_ms": {
+            "cute": 0.10740078530277831,
+            "comfy": 0.14002376693536178
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.001722881986655064,
+            "comfy": 0.002216228392002943
+          }
+        },
+        {
+          "shape": [
+            1,
+            7,
+            16,
+            24,
+            16,
+            64
+          ],
+          "window": [
+            3,
+            7,
+            7
+          ],
+          "dtype": "torch.bfloat16",
+          "milliseconds": {
+            "cute": [
+              0.11984778490305893,
+              0.11993942027677038,
+              0.11962418902317802,
+              0.11975426812902012,
+              0.12132083256421142,
+              0.11951279152727719,
+              0.12134009884108986,
+              0.11991178294436054,
+              0.12005357979321662
+            ],
+            "comfy": [
+              0.16790281208903973,
+              0.16719156389148812,
+              0.16703877455394758,
+              0.1669261234426394,
+              0.16703379969384663,
+              0.1680554332771502,
+              0.16683984405708324,
+              0.16735485123383212,
+              0.1669030292254808
+            ]
+          },
+          "median_ms": {
+            "cute": 0.11991178294436054,
+            "comfy": 0.16703877455394758
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.0016946573545201004,
+            "comfy": 0.002181947602523095
+          }
+        },
+        {
+          "shape": [
+            1,
+            13,
+            16,
+            24,
+            8,
+            64
+          ],
+          "window": [
+            3,
+            5,
+            5
+          ],
+          "dtype": "torch.bfloat16",
+          "milliseconds": {
+            "cute": [
+              0.10545884183439601,
+              0.10595385747827527,
+              0.10575442019914992,
+              0.09954615029279347,
+              0.10085884716260315,
+              0.100072067551941,
+              0.09939441279500308,
+              0.10022272195812607,
+              0.10492917253793567
+            ],
+            "comfy": [
+              0.1345361754700301,
+              0.13354140386987573,
+              0.13663894334640048,
+              0.1346985346979465,
+              0.13092345156138813,
+              0.13155597168707303,
+              0.12983903441442773,
+              0.1296464510579495,
+              0.1307373425125881
+            ]
+          },
+          "median_ms": {
+            "cute": 0.10085884716260315,
+            "comfy": 0.13155597168707303
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.0017159073152827411,
+            "comfy": 0.0020990656411102927
+          }
+        },
+        {
+          "shape": [
+            1,
+            25,
+            32,
+            48,
+            8,
+            64
+          ],
+          "window": [
+            3,
+            5,
+            5
+          ],
+          "dtype": "torch.bfloat16",
+          "milliseconds": {
+            "cute": [
+              0.24952446624399754,
+              0.2500589788542129,
+              0.2508977819630937,
+              0.2506104130670895,
+              0.25011702862684615,
+              0.24993308371028278,
+              0.24999912607875396,
+              0.24997600492034178,
+              0.2500345924636349
+            ],
+            "comfy": [
+              0.5368656031263058,
+              0.5388260109885846,
+              0.5428257154119087,
+              0.5425604903908966,
+              0.5430922954567887,
+              0.5427604849730444,
+              0.5424678077047999,
+              0.5428821626460043,
+              0.5442392635893117
+            ]
+          },
+          "median_ms": {
+            "cute": 0.2500345924636349,
+            "comfy": 0.5427604849730444
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.0016931298714009837,
+            "comfy": 0.0021013319420830033
+          }
+        },
+        {
+          "shape": [
+            1,
+            33,
+            64,
+            96,
+            4,
+            64
+          ],
+          "window": [
+            11,
+            11,
+            11
+          ],
+          "dtype": "torch.bfloat16",
+          "milliseconds": {
+            "cute": [
+              5.076684977393597,
+              5.171735460559527,
+              5.1760572062518735,
+              5.181085563097627,
+              5.183811409948155,
+              5.1887938961721005,
+              5.1877703338574905,
+              5.189843102692603,
+              5.192669717451701
+            ],
+            "comfy": [
+              9.758821189669627,
+              9.769893428754239,
+              9.783506947791292,
+              9.781956999740075,
+              9.787399282989403,
+              9.785636954586066,
+              9.814947333541655,
+              9.811800760438754,
+              9.818084903859667
+            ]
+          },
+          "median_ms": {
+            "cute": 5.183811409948155,
+            "comfy": 9.785636954586066
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.001652953808049833,
+            "comfy": 0.0022806947624137877
+          }
+        },
+        {
+          "shape": [
+            1,
+            17,
+            128,
+            128,
+            4,
+            64
+          ],
+          "window": [
+            11,
+            11,
+            11
+          ],
+          "dtype": "torch.bfloat16",
+          "milliseconds": {
+            "cute": [
+              6.949666100714741,
+              7.077607587140439,
+              7.085779862446261,
+              7.084276410751045,
+              7.091580103312073,
+              7.09279075842993,
+              7.092609070241451,
+              7.090011483122563,
+              7.094457312005347
+            ],
+            "comfy": [
+              13.471607801814875,
+              13.482358927528063,
+              13.504779866586128,
+              13.502139939616123,
+              13.546117798735699,
+              13.54337113443762,
+              13.55050439791133,
+              13.542875872614482,
+              13.547437133577963
+            ]
+          },
+          "median_ms": {
+            "cute": 7.090011483122563,
+            "comfy": 13.542875872614482
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.00170688844302742,
+            "comfy": 0.002282938584982601
+          }
+        },
+        {
+          "shape": [
+            1,
+            13,
+            64,
+            65,
+            2,
+            64
+          ],
+          "window": [
+            11,
+            11,
+            11
+          ],
+          "dtype": "torch.bfloat16",
+          "milliseconds": {
+            "cute": [
+              0.796774845285755,
+              0.8000652962364256,
+              0.8007296840660274,
+              0.8014685879461467,
+              0.8110251741461184,
+              0.8017082642763853,
+              0.801522312220186,
+              0.8009600001387298,
+              0.8023710562847555
+            ],
+            "comfy": [
+              1.6318715605279053,
+              1.6319423656516927,
+              1.6377795037124458,
+              1.637342194761566,
+              1.6393472457716822,
+              1.6370058538604195,
+              1.637780146362881,
+              1.637063821118961,
+              1.637264137815048
+            ]
+          },
+          "median_ms": {
+            "cute": 0.8014685879461467,
+            "comfy": 1.637264137815048
+          },
+          "worst_head_sampled_fp64_relative_l2": {
+            "cute": 0.001663865460775061,
+            "comfy": 0.0022455710113449124
+          }
+        }
+      ]
+    }
+  },
+  "tested_source_sha256": {
+    "cute_attention/__init__.py": "14a93756188d7a95ef6f17b29856d86947dfecf85a7000c0470bf3c2cd161a35",
+    "cute_attention/attention.py": "1a0f81297fb7f1833713e853b64bd756c03da204c1e4f627aaeaeaac9b5665d2",
+    "cute_attention/ltx_node.py": "5cd77040bcbfd7e5fc9f6f2c0795b6a44993a73295a70f421fff3a88e3341417",
+    "cute_attention/neighborhood.py": "a4680c66d3b01f4942cd202cdff2ac3e44ad2623dbd540ef27caa52d90423d75",
+    "cute_attention/nodes.py": "30625ed38371ab46f8891c97fa0c7ae398de69ece7ab5bccf5338deff0188e6b",
+    "cute_attention/pmrf_node.py": "743e5a77f8b0c190ea70927875447dc39f7f1165c0b766d406761f237d757f68",
+    "cute_attention/runtime.py": "fd85928d977952525d08e1eb63059ed14b2ec66beb0770c7be37fd018ba8ae75",
+    "cute_attention/vendor/__init__.py": "8f2915875a03b55f46efbecb26bed25b8717df083a24921739be00fa85acd28a",
+    "cute_attention/vendor/kohakufa_cute/__init__.py": "8c3a58a9e494de1bb58273854cef7483ecd2736285b1f389eb8fd4e07fa97a93",
+    "cute_attention/vendor/kohakufa_cute/_ops.py": "2d19cae8c26f6ba1fe2a1357a2a76d764edc111da898ca642f9b22a3588c5243",
+    "cute_attention/vendor/kohakufa_cute/ada.py": "b875706983267097f1ec335d077438888037aa88146213363b641b5b47498a91",
+    "cute_attention/vendor/kohakufa_cute/api.py": "292e0718cd02cd6117be0325309fe0f52d217026384bd5eb704e7e8260fe49ce",
+    "cute_attention/vendor/kohakufa_cute/blackwell.py": "93a745a61cf50678924c38012e62be61dca18198381fb8cd49bb9fb9fa6f9e04",
+    "cute_attention/vendor/kohakufa_cute/blackwell_pipeline.py": "93c0df74a609af7702284a2ee9e1a5aee49a58bfb287ae74bcc4bc3db9c27387",
+    "cute_attention/vendor/kohakufa_cute/blackwell_register_aux.py": "1592977944359565137e3a9488c50088b5ffd6a2856ac9c06b5773162fc4bffb",
+    "cute_attention/vendor/kohakufa_cute/determinism.py": "1f286440157840da45e18c310f0247ecc18eec98e4201b937392eb6b4649fa5c",
+    "cute_attention/vendor/kohakufa_cute/fa4_hopper/__init__.py": "bba1ee77f3a30e4f270b0b3456839c346f6ba7266652c2768113927d599cc466",
+    "cute_attention/vendor/kohakufa_cute/fa4_hopper/_attention.py": "fa21cfc64103b618fd7d2c61f9fdea0899a4d7bf3372c9e3d0808065f427fb68",
+    "cute_attention/vendor/kohakufa_cute/fa4_hopper/_backward.py": "075f47b462e7af2e9728b5622091599a00459185761e6ca282c8f21cdad1a3bf",
+    "cute_attention/vendor/kohakufa_cute/fa4_hopper/_forward.py": "3a8a6361a0f1917a83f906aec0010b11719a1902112638caa7045f2482f6fcc4",
+    "cute_attention/vendor/kohakufa_cute/fa4_hopper/_native.py": "0c71ec83e3c93d6b18e13894d4b095c04c4033c8bf16d6ade18a77a614fa6318",
+    "cute_attention/vendor/kohakufa_cute/fa4_hopper/_persistent.py": "903d4732df88142fbbcb79506b0b59c54eff60952dd59fd09b2756e18f87bba1",
+    "cute_attention/vendor/kohakufa_cute/fa4_hopper/_preprocess.py": "5db6b16485a601a1416fbd0edab0760e2b2a3925101966437c4cc61ea163b9a0",
+    "cute_attention/vendor/kohakufa_cute/fa4_hopper/_private_api.py": "94ae436c1d85884feaab898c047923342424a2b8feaad232e768c3301e6e2b1c",
+    "cute_attention/vendor/kohakufa_cute/fa4_hopper/_softmax.py": "f9bd803b4bd706188eaac5d29f8b6c6b226878730ed986b2aff02bfebdbd7e08",
+    "cute_attention/vendor/kohakufa_cute/fa4_sm80/__init__.py": "d65fa90fb4cc172e836765b6291833727711e68f3e2f270586d7cf100230a1ab",
+    "cute_attention/vendor/kohakufa_cute/fa4_sm80/_attention.py": "49b589c4622a5f05a46c4b6048a2bb740ab0a879e12f0b7e0391a24cb781ab43",
+    "cute_attention/vendor/kohakufa_cute/fa4_sm80/_backward.py": "d1b73a88e07c1da01b887e149d88ac93d8c98c427179bc7d95cf93d351fb5611",
+    "cute_attention/vendor/kohakufa_cute/fa4_sm80/_forward.py": "ea08bd1ffe61c609566492d2533e681c653db547cf0b872599ef3d53df9df595",
+    "cute_attention/vendor/kohakufa_cute/fa4_sm80/_host.py": "057fc9fd69de10200f0c511a58712e05f09b05bfa6038ad21abe20b0a903a8db",
+    "cute_attention/vendor/kohakufa_cute/fa4_sm80/_l40s.py": "96f1fc44dafb24c46188c5ab149ffb140c8f93dcfa1b061317ebe4850ed90c6d",
+    "cute_attention/vendor/kohakufa_cute/fa4_sm80/_native.py": "80bd9cca675d56cca389b4d05a086794bab063eaa6667e15ddea4a431a2cfd13",
+    "cute_attention/vendor/kohakufa_cute/fa4_sm80/_preprocess.py": "9beb2c7280ee5b583023611a4e94122cd1b05a4517b2b66665b4e0eb7f30ee60",
+    "cute_attention/vendor/kohakufa_cute/fa4_sm80/_private_api.py": "1b70b88344b0da3c87300a869ae689e68b38482a4dd85518c6d520bed8b4a91e",
+    "cute_attention/vendor/kohakufa_cute/fa4_sm80/_schedules.py": "7edce334b76fcefe23e0cf9e59f541c710cf77e52af5aa9c98829697ae78a451",
+    "cute_attention/vendor/kohakufa_cute/fa4_sm80/_sm120.py": "001782de2f25e0a79523633d7408c6b98d8661b09581cfe0fbd8d9156518b9c8",
+    "cute_attention/vendor/kohakufa_cute/fa4_sm80/_softmax.py": "ba6568cf0ac95ae9cc847b798d994db00ca7becf92770858c10ef45a892502e9",
+    "cute_attention/vendor/kohakufa_cute/fa4_sm80/a40.py": "033405f3266942111b6f21e2f4864637a505279c7f92924c918e09a73fa4b3df",
+    "cute_attention/vendor/kohakufa_cute/fa4_sm80/gb10.py": "f11c60b44f46907c16c7df36ed0307e3e6f195d50c429b52943357e9c980f8cb",
+    "cute_attention/vendor/kohakufa_cute/fa4_sm80/rtx4090.py": "2937aede6678e095df217e40a722e454fe3d7e347960046f8b2da47ebd893b77",
+    "cute_attention/vendor/kohakufa_cute/hopper_forward.py": "a3ad55bc361a3f6d55f0216037deb04eb1553a632c8b20032b4c0cf011cb0272",
+    "cute_attention/vendor/kohakufa_cute/kernels.py": "2674e16857fc2b8c1cbc1053ec8b6d80cc5213eb2e56e960307ea6641dc82053",
+    "cute_attention/vendor/kohakufa_cute/l40s.py": "97b34f5bc2e7020fb1a7545d373b916c80f55bfa6487669eff0499848bace406",
+    "cute_attention/vendor/kohakufa_cute/launch.py": "450b6d27ed26346e2174c49fe40a652d7b78076bf116970bd4b7ddcbd2982a70",
+    "cute_attention/vendor/kohakufa_cute/medium_backward.py": "4df4b7b1c369c7ddf4cafafb9e2afecad2ebb5241ebcaab76bdff0d9d74cbd48",
+    "cute_attention/vendor/kohakufa_cute/native.cpp": "5f3cb3e84751f32a75d89ffefd0f9b568bfc847c00b4a7e71c514bb4aa82bbf1",
+    "cute_attention/vendor/kohakufa_cute/native.py": "6b35b3492c13e2e317a4e21489a6c00741441018490c3ece355257620c3ceb0e",
+    "cute_attention/vendor/kohakufa_cute/neighborhood_forward_precision.py": "5bcfd88f957753660746e323b8d3bd8ef698e2154152a29396f0c8796fa3d4b5",
+    "cute_attention/vendor/kohakufa_cute/neighborhood_geometry.py": "7fc10580e58fc8869382f7996be80322fcbf26a584572f725657dbc787b27ee9",
+    "cute_attention/vendor/kohakufa_cute/neighborhood_kernels.py": "6e570e57c9bf75eb70092b18a05f8ac7563b8a86dd59fb284eb9365436d03c54",
+    "cute_attention/vendor/kohakufa_cute/neighborhood_ops.py": "d842aef9af6bdbb27fd846a4cd91966770f91f6915071285002f004abd68be7b",
+    "cute_attention/vendor/kohakufa_cute/neighborhood_schedule.py": "4fd6aeb5de627405a8a7de2cad0c12c99e50ca1970c798c4a7acd0662f076f97",
+    "cute_attention/vendor/kohakufa_cute/neighborhood_volume_forward.py": "c420faf35ed148d044918c810cc5df7bee5be8fdf46882d2d6b358fc295c13e6",
+    "cute_attention/vendor/kohakufa_cute/precision.py": "c7e8dc4cc5f0a523b21955c9d6d2485f24b0c6aa27f1200653e27859981d4260",
+    "cute_attention/vendor/kohakufa_cute/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cute_attention/vendor/kohakufa_cute/rtx3090.py": "8c9a9cda8364ff5100e3a49e505c744930a24dc14bd3d9d59982a84d1d6ad7c5",
+    "cute_attention/vendor/kohakufa_cute/short_forward.py": "4b08931d4978d3b70be4f419db50661695c937944e9ad3b9b854fa3a9c219fdb",
+    "cute_attention/vendor/kohakufa_cute/short_key32_owned.py": "3607e42aefa41345a83cd91ea12d637dda60c0b9f60f9dcc13a3e96945c8bd09",
+    "cute_attention/vendor/kohakufa_cute/short_key_quad_skip_owned.py": "7316421c169d289e1c0c6366d9d80ee833aefcb3d9ef356e0636a2b990889c72",
+    "cute_attention/vendor/kohakufa_cute/short_key_stats_owned.py": "c4783ace3179b027ab547f861766c57ac84f9df7ef9d8269396132c6b139e365",
+    "cute_attention/vendor/kohakufa_cute/short_owned.py": "97913a8c623edbde19ceacc324fd32159fbee8b10cf35b3a687c355a1b748dfa",
+    "cute_attention/vendor/kohakufa_cute/short_reciprocal.py": "8238258a7ced42cd0c08c45e1313dc5793526f358ea0175f621e524c42864098",
+    "cute_attention/vendor/kohakufa_cute/sm103.py": "0c310638eda9c17a157091ca3dcf51ea08cd83baf34778c415e080d9d77a57e6",
+    "cute_attention/vendor/kohakufa_cute/sm120_backward.py": "34bc6d05dd40eaeaec73f867ff3b03073b5cd5ae67d649e17bde1e6b7f5492fd",
+    "cute_attention/vendor/kohakufa_cute/sm120_schedule.py": "e5c2ecd79a80582203a9913d0c4bfb2b5323229699920c661b23e44374fe9244",
+    "cute_attention/vendor/kohakufa_cute/sm86.py": "49f8b8b50809315f77978425420d65fa76729f20ace0f1a118b1e31574fc5d37",
+    "cute_attention/vendor/kohakufa_cute/sm86_backward.py": "2381cb376b2a1490e2ef488c8f768f0283e9b2f21fa83834b2627ea591c5ef35",
+    "cute_attention/vendor/kohakufa_cute/split_forward.py": "75f7d43144b200d9caedb6fbf713aed6335ec4005d1a3ba8b801dafa74818578",
+    "cute_attention/vendor/kohakufa_cute/weight_precision.py": "3e9bb16cde2fb894ae347825a66082ae1fc860bc24f4867138994b98eb65fb02",
+    "cute_attention/vendor/kohakufa_cute/wide_backward.py": "5ce2d2b9039b5b33253b28c1e72f57a239e3540c09b6b343ae2af2f57d2d6b47",
+    "tests/benchmark_ltx_neighborhood.py": "d5927d381479621656bdb82dc203fac28fffc6d8f891388a54f843f9a34feab5",
+    "tests/gpu_neighborhood_3d.py": "d67d27d988f5147b0daedb997c041516d689d14c1177431ade04bd085aef4d63",
+    "tests/ltx_decode_smoke.py": "5f2d875fe0d22685ab2d5f3fa896c87df4e4098248aed12fa6cff1eca621c53c"
+  },
+  "archive": {
+    "file_count": 193,
+    "sha256": "a29e977eced5728b95ebdab53ac99a8233885a1b12b76ea2aaaeaf0d93f2bb2e"
+  }
+}

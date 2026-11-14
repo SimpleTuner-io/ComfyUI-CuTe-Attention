@@ -107,3 +107,8 @@ logarithmic normalization, actual rounded-output delta, input-dtype P before
 dS, one dS conversion, FP32 accumulation and late dQ/dK scaling. Unchanged helpers
 use the pinned optional dependency. The derived methods retain copyright and
 contributor notices under the same reproduced BSD-3-Clause license.
+
+The LTX 2.5 example workflows adapt the first stage of Comfy Org
+workflow_templates at e7cd011d4ded3411c2f481200544f0be6fdc962e.
+Copyright (c) 2023-present Comfy Org. Distributed under the MIT License,
+reproduced in LICENSES/MIT-Comfy-Org.txt.

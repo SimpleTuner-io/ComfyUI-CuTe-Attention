@@ -5,16 +5,39 @@ import os
 from pathlib import Path
 import re
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
 import unittest
+import zlib
 
 GUARD = Path(__file__).resolve().parents[1] / "tools" / "check_public_text.py"
 BLOCKED = "Blocked: local machine identity was found in public text.\n"
 
 
 class PublicTextTests(unittest.TestCase):
+    @staticmethod
+    def png(chunks=None, pixels=b"\x00\x7e\x5c\x41"):
+        def chunk(kind, payload):
+            return (
+                struct.pack(">I", len(payload))
+                + kind
+                + payload
+                + struct.pack(">I", zlib.crc32(kind + payload))
+            )
+
+        chunks = (
+            chunks
+            if chunks is not None
+            else [
+                (b"IHDR", struct.pack(">IIBBBBB", 1, 1, 8, 2, 0, 0, 0)),
+                (b"IDAT", zlib.compress(pixels, level=0)),
+                (b"IEND", b""),
+            ]
+        )
+        return b"\x89PNG\r\n\x1a\n" + b"".join(chunk(*c) for c in chunks)
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
@@ -80,6 +103,63 @@ class PublicTextTests(unittest.TestCase):
         self.write("message.txt", "Improve the kernel pipeline")
         result = self.guard("--staged", "--metadata", "--message-file", "message.txt")
         self.assertEqual((result.returncode, result.stdout, result.stderr), (0, b"", b""))
+
+    def test_prepared_png_pixels_are_not_text_but_text_inputs_remain_strict(self):
+        (self.repo / "evidence.png").write_bytes(self.png())
+        self.git("add", "evidence.png")
+        self.assertEqual(self.guard("--staged").returncode, 0)
+        self.commit()
+        self.assertEqual(self.guard("--history").returncode, 0)
+        self.assert_blocked(self.guard("--text-file", "evidence.png"))
+
+    def test_png_metadata_and_trailing_content_fail_closed(self):
+        header = (b"IHDR", struct.pack(">IIBBBBB", 1, 1, 8, 2, 0, 0, 0))
+        image = (b"IDAT", zlib.compress(b"\x00\x01\x02\x03"))
+        for kind in (b"tEXt", b"zTXt", b"iTXt", b"eXIf", b"iCCP", b"gAMA"):
+            payload = self.png([header, (kind, self.private_name.encode()), image, (b"IEND", b"")])
+            (self.repo / "evidence.png").write_bytes(payload)
+            self.git("add", "evidence.png")
+            self.assert_blocked(self.guard("--staged"))
+        (self.repo / "evidence.png").write_bytes(self.png() + self.private_name.encode())
+        self.git("add", "evidence.png")
+        self.assert_blocked(self.guard("--staged"))
+
+    def test_malformed_png_fails_closed_without_echo(self):
+        header = (b"IHDR", struct.pack(">IIBBBBB", 1, 1, 8, 2, 0, 0, 0))
+        image = (b"IDAT", zlib.compress(b"\x00\x01\x02\x03"))
+        cases = [
+            self.png()[:-1],
+            self.png()[:-12],
+            self.png()[:-1] + b"X",
+            self.png(pixels=b"\x05\x01\x02\x03"),
+            self.png(pixels=b"\x00"),
+            self.png(pixels=b"\x00\x01\x02\x03extra"),
+            self.png([header, (b"IDAT", b"invalid"), (b"IEND", b"")]),
+            self.png([header, (b"IDAT", image[1] + b"extra"), (b"IEND", b"")]),
+            self.png([image, header, (b"IEND", b"")]),
+            self.png(
+                [(b"IHDR", struct.pack(">IIBBBBB", 99999, 99999, 8, 2, 0, 0, 0)), image, (b"IEND", b"")]
+            ),
+            self.png([(b"IHDR", struct.pack(">IIBBBBB", 1, 1, 8, 3, 0, 0, 0)), image, (b"IEND", b"")]),
+        ]
+        for payload in cases:
+            (self.repo / "evidence.png").write_bytes(payload)
+            self.git("add", "evidence.png")
+            self.assert_blocked(self.guard("--staged"))
+
+    def test_deleted_png_metadata_remains_blocked_in_history(self):
+        chunks = [
+            (b"IHDR", struct.pack(">IIBBBBB", 1, 1, 8, 2, 0, 0, 0)),
+            (b"tEXt", self.private_name.encode()),
+            (b"IDAT", zlib.compress(b"\x00\x01\x02\x03")),
+            (b"IEND", b""),
+        ]
+        (self.repo / "evidence.png").write_bytes(self.png(chunks))
+        self.git("add", "evidence.png")
+        self.commit()
+        self.git("rm", "evidence.png")
+        self.commit()
+        self.assert_blocked(self.guard("--history"))
 
     def test_full_index_includes_unchanged_file(self):
         self.write("old.txt", self.private_name, stage=True)
