@@ -3,6 +3,7 @@
 import itertools
 import json
 import unittest
+from unittest.mock import patch
 
 import torch
 
@@ -30,6 +31,88 @@ class Neighborhood3DGPU(unittest.TestCase):
         if not torch.cuda.is_available():
             raise RuntimeError("CUDA hardware is required for this suite.")
         torch.manual_seed(1729)
+
+    def test_native_cache_matches_python_launch_with_fresh_operands(self):
+        from cute_attention.vendor.kohakufa_cute.neighborhood_kernels import set_experiment_configuration
+        from cute_attention.vendor.kohakufa_cute.neighborhood_schedule import BASELINE_COLUMNS
+        from cute_attention.vendor.kohakufa_cute.native import extension
+
+        extension().clear_cache()
+        for dtype in (torch.float16, torch.bfloat16):
+            for shape, offset in (((3, 16, 20), 8), ((3, 16, 20), 1), ((3, 8, 40), 8)):
+                for repeat in range(2):
+                    operands = [
+                        torch.randn(1, *shape, 2, 80, device="cuda", dtype=dtype)[
+                            ..., offset : offset + 64
+                        ].requires_grad_()
+                        for _ in range(3)
+                    ]
+                    grad = torch.randn_like(operands[0])
+                    for scale in (0.0, -0.125):
+                        out = neighborhood_attention_3d(*operands, (3, 5, 5), None, scale)
+                        actual = (out,) + torch.autograd.grad(out, operands, grad)
+                        size = extension().cache_size()
+                        # Force the same kernel through Python, bypassing the new native cache.
+                        set_experiment_configuration(BASELINE_COLUMNS)
+                        try:
+                            expected = neighborhood_attention_3d(*operands, (3, 5, 5), None, scale)
+                            target = (expected,) + torch.autograd.grad(expected, operands, grad)
+                        finally:
+                            set_experiment_configuration(None)
+                        for got, want in zip(actual, target):
+                            torch.testing.assert_close(got, want, rtol=0, atol=0)
+                        self.assertEqual(extension().cache_size(), size)
+
+    def test_union_dispatch_and_changed_graph_inputs(self):
+        from cute_attention.vendor.kohakufa_cute.native import extension
+        from cute_attention.vendor.kohakufa_cute.neighborhood_kernels import _compile
+        from cute_attention.vendor.kohakufa_cute.neighborhood_volume_forward import UnionVolumeForward
+        from cute_attention.vendor.kohakufa_cute.neighborhood_schedule import (
+            VolumeUnionSchedule,
+            default_volume_schedule,
+        )
+
+        for shape, window in (((3, 16, 20), (3, 5, 5)), ((13, 64, 65), (11, 11, 11))):
+            device = torch.cuda.get_device_properties(0)
+            selection = default_volume_schedule(
+                device_name=device.name,
+                capability=torch.cuda.get_device_capability(),
+                sm_count=device.multi_processor_count,
+                shape=(1, 1, shape[0] * shape[1] * shape[2], 64),
+                spatial=shape,
+                window=window,
+                dtype="bfloat16",
+                vector=8,
+            )
+            if not isinstance(selection, VolumeUnionSchedule):
+                self.skipTest("Requires a GPU qualified for the union schedule")
+            extension().clear_cache()
+            _compile.cache_clear()
+            operands = [torch.randn(1, *shape, 1, 64, device="cuda", dtype=torch.bfloat16) for _ in range(3)]
+            initialize = UnionVolumeForward.__init__
+            owners = []
+
+            def record(program, *args, **kwargs):
+                owners.append(True)
+                initialize(program, *args, **kwargs)
+
+            stream = torch.cuda.Stream()
+            stream.wait_stream(torch.cuda.current_stream())
+            with torch.cuda.stream(stream), patch.object(UnionVolumeForward, "__init__", record):
+                for _ in range(3):
+                    neighborhood_attention_3d(*operands, window, None, 0.125)
+            stream.synchronize()
+            self.assertEqual(owners, [True])
+            graph = torch.cuda.CUDAGraph()
+            with torch.cuda.graph(graph, stream=stream):
+                out = neighborhood_attention_3d(*operands, window, None, 0.125)
+            for tensor in operands:
+                tensor.normal_()
+            out.fill_(torch.nan)
+            graph.replay()
+            torch.cuda.synchronize()
+            expected = neighborhood_attention_3d(*operands, window, None, 0.125)
+            torch.testing.assert_close(out, expected, rtol=0, atol=0)
 
     def test_kitchen_comparison_and_fp32_fallback(self):
         import comfy_kitchen

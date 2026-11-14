@@ -24,7 +24,7 @@ Restart ComfyUI. Requires Python 3.12+, CUDA-enabled Torch 2.11+, Linux, an NVID
 GPU supported by the vendored kernels, and a C++17 compiler for CuTe execution.
 The native launcher and kernels compile on first use, which can take a while.
 The vendored source is KohakuFA-CuTe 0.4.0 at
-`cf97ce0e204f0ba970b04dcd5af5ad7d5c6e560d`; see [provenance](VENDORED.md).
+`70d5f0bff4c6c22b044611b6c44312e6bb1a016f`; see [provenance](VENDORED.md).
 It is included here and is never downloaded at runtime.
 The dense node uses native Torch SDPA for unsupported calls in `auto` mode.
 
@@ -82,10 +82,12 @@ the kitchen module nor Torch SDPA is patched. Existing forward overrides and
 compiled decoder blocks are unsupported. The dense `MODEL` patch does not replace
 this VAE's `na3d` calls. NATTEN is not required by this node.
 
-See the [RTX 5090 validation and frame comparison](results/ltx25-na3d-2026-11-13.md).
-On that 384×256 example, output agreement is about 62 dB PSNR, but warm decoding
-is slower with CuTe (270 ms versus 166 ms). This node is an explicit alternative,
-not a demonstrated speedup over current ComfyUI on the 5090.
+See the [RTX 5090 validation and frame comparison](results/ltx25-na3d-2026-11-14.md).
+On that 384×256 example, warm complete decoding takes 132 ms with CuTe versus
+170 ms with Comfy Kitchen 0.2.41 (1.29×), with about 62 dB output agreement.
+The two measured large-window BF16 attention shapes are 1.89–1.91× faster.
+Compilation is excluded; these are decoder/attention measurements, not a
+complete video-generation speedup.
 
 ## PMRF neighborhood attention
 

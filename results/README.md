@@ -1,7 +1,9 @@
 # RTX 4090 validation
 
 For the current vendor snapshot, see the
-[2026-11-13 neighborhood and PMRF validation](neighborhood-pmrf-2026-11-13.md).
+[2026-11-14 LTX VAE and RTX 5090 validation](ltx25-na3d-2026-11-14.md).
+The [2026-11-13 neighborhood and PMRF validation](neighborhood-pmrf-2026-11-13.md)
+records the preceding RTX 4090 neighborhood integration.
 The [2026-11-02 refresh](vendor-sync-2026-11-02.md) and the timings and GPU
 results below describe the earlier source revisions identified in those reports.
 

@@ -7,6 +7,7 @@ First calls include compilation/loading; warm runs alternate backend order.
 import argparse
 import asyncio
 import importlib
+import importlib.metadata
 import json
 import math
 from pathlib import Path
@@ -60,6 +61,8 @@ def main():
         "python": platform.python_version(),
         "torch": torch.__version__,
         "cuda": torch.version.cuda,
+        "comfy_kitchen": importlib.metadata.version("comfy-kitchen"),
+        "warm_repeats": args.repeats,
         "latent_shape": list(samples["samples"].shape),
         "neighborhood_blocks": len(blocks),
         "timing_boundary": "complete decode node; synchronized wall time, resident weights after first call",
